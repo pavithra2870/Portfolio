@@ -28,14 +28,26 @@ export default function Nav() {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
+    if (!open) return
+
+    const scrollY = window.scrollY
+    const { style } = document.body
+    style.position = 'fixed'
+    style.top = `-${scrollY}px`
+    style.left = '0'
+    style.right = '0'
+
     return () => {
-      document.body.style.overflow = ''
+      style.position = ''
+      style.top = ''
+      style.left = ''
+      style.right = ''
+      window.scrollTo(0, scrollY)
     }
   }, [open])
 
   return (
-    <header className={`nav ${scrolled ? 'nav--scrolled' : ''}`}>
+    <header className={`nav ${scrolled ? 'nav--scrolled' : ''} ${open ? 'nav--open' : ''}`}>
       <ScrollProgress />
       <div className="nav__inner container">
         <a href="#top" className="nav__mark">

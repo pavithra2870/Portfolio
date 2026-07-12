@@ -17,6 +17,12 @@
   border-bottom-color: var(--color-border);
 }
 
+.nav--open {
+  background: var(--color-bg);
+  backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
 .nav__inner {
   display: flex;
   align-items: center;
