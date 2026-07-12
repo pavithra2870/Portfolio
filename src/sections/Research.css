@@ -1,0 +1,50 @@
+.research__list {
+  display: flex;
+  flex-direction: column;
+}
+
+.research-detail__title {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--space-xs);
+  padding-right: 2rem;
+}
+
+.research-detail__line {
+  font-size: var(--fs-md);
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-md);
+}
+
+.research-detail__block {
+  margin-bottom: var(--space-md);
+}
+
+.research-detail__block h4 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-2xs);
+}
+
+.research-detail__block p {
+  font-size: var(--fs-base);
+  color: var(--color-ink);
+  line-height: 1.65;
+}
+
+.research-detail__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.research-detail__tech li {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--color-ink-faint);
+  border: 1px solid var(--color-border);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+}

@@ -1,0 +1,103 @@
+.about__grid {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: -2rem; /* Adjust this value to pull it up as much as needed */
+}
+.about__paragraph {
+  font-size: var(--fs-md);
+  color: var(--color-ink-soft);
+  max-width: 68ch;
+  margin-top: 0; /* Strips default browser spacing */
+  margin-bottom: var(--space-sm);
+}
+
+.about__paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.about__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.about__card {
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  transition: transform var(--duration-fast) var(--ease-premium),
+              border-color var(--duration-fast) var(--ease-premium),
+              box-shadow var(--duration-fast) var(--ease-premium);
+}
+
+.about__card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: 0 14px 30px -22px rgba(28, 28, 30, 0.28);
+}
+
+.about__card-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-transform: lowercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-xs);
+}
+
+.about__edu + .about__edu {
+  margin-top: var(--space-xs);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border);
+}
+
+.about__edu-school {
+  font-family: var(--font-serif);
+  font-size: var(--fs-base);
+  color: var(--color-ink);
+}
+
+.about__edu-degree {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+  margin-top: 0.2rem;
+}
+
+.about__edu-period {
+  font-size: var(--fs-xs);
+  color: var(--color-ink-faint);
+  margin-top: 0.2rem;
+}
+
+.about__current {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.about__current li {
+  display: flex;
+  flex-direction: column;
+}
+
+.about__current-role {
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+}
+
+.about__current-org {
+  font-size: var(--fs-xs);
+  color: var(--color-accent);
+}
+
+.about__misc {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-soft);
+}
+
+@media (min-width: 900px) {
+  .about__grid {
+    grid-template-columns: 1.6fr 1fr;
+    gap: var(--space-xl);
+  }
+}

@@ -1,0 +1,90 @@
+.apprenticeship__item {
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  transition: transform var(--duration-fast) var(--ease-premium),
+              border-color var(--duration-fast) var(--ease-premium),
+              box-shadow var(--duration-fast) var(--ease-premium);
+}
+
+.apprenticeship__item:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: 0 14px 30px -22px rgba(28, 28, 30, 0.28);
+}
+
+.apprenticeship__head {
+  margin-bottom: var(--space-xs);
+}
+
+.apprenticeship__org {
+  font-size: var(--fs-lg);
+}
+
+.apprenticeship__role {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-faint);
+  margin-top: 0.2rem;
+}
+
+.apprenticeship__summary {
+  font-size: var(--fs-base);
+  color: var(--color-ink-soft);
+  max-width: 74ch;
+  margin-bottom: var(--space-sm);
+}
+
+.apprenticeship__highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 74ch;
+  margin-bottom: var(--space-sm);
+}
+
+.apprenticeship__highlights li {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  line-height: 1.6;
+}
+
+.apprenticeship__highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.apprenticeship__outcome {
+  font-size: var(--fs-sm);
+  color: var(--color-accent-ink);
+  margin-bottom: var(--space-sm);
+}
+
+.apprenticeship__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.apprenticeship__tech li {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--color-ink-faint);
+  border: 1px solid var(--color-border);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  transition: border-color var(--duration-fast) var(--ease-premium),
+              color var(--duration-fast) var(--ease-premium);
+}
+
+.apprenticeship__tech li:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+}

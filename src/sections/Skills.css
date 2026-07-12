@@ -1,0 +1,110 @@
+.skills__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.skills__category {
+  padding-block: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.skills__category-title {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-xs);
+}
+
+.skills__category-desc {
+  font-size: var(--fs-base);
+  color: var(--color-ink-soft);
+  max-width: 62ch;
+  margin-bottom: var(--space-sm);
+}
+
+.skills__capabilities {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  max-width: 62ch;
+}
+
+.skills__capabilities li {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  line-height: 1.6;
+}
+
+.skills__capabilities li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.skills__stack {
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.skills__stack-heading {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-md);
+}
+
+.skills__stack-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.skills__stack-category {
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+
+.skills__stack-group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skills__stack-group li {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  color: var(--color-ink-soft);
+  border: 1px solid var(--color-border);
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  transition: border-color var(--duration-fast) var(--ease-premium),
+              color var(--duration-fast) var(--ease-premium),
+              transform var(--duration-fast) var(--ease-premium);
+}
+
+.skills__stack-group li:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+  transform: translateY(-1px);
+}
+
+@media (min-width: 700px) {
+  .skills__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+  .skills__stack-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,0 +1,117 @@
+.projects__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+.projects__grid.reveal-stagger:not(.is-visible) > *:nth-child(odd) {
+  transform: perspective(1000px) rotateX(6deg) translate(-16px, 20px) scale(0.98);
+}
+
+.projects__grid.reveal-stagger:not(.is-visible) > *:nth-child(even) {
+  transform: perspective(1000px) rotateX(6deg) translate(16px, 20px) scale(0.98);
+}
+
+.projects__grid.reveal-stagger > * {
+  transition-duration: 720ms;
+}
+
+@media (min-width: 640px) {
+  .projects__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .projects__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.project-detail__complexity {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xs);
+}
+
+.project-detail__title {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--space-xs);
+  padding-right: 2rem;
+}
+
+.project-detail__line {
+  font-size: var(--fs-md);
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-md);
+}
+
+.project-detail__block {
+  margin-bottom: var(--space-md);
+}
+
+.project-detail__block h4 {
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  text-transform: lowercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-faint);
+  margin-bottom: var(--space-2xs);
+}
+
+.project-detail__block p {
+  font-size: var(--fs-base);
+  color: var(--color-ink);
+  line-height: 1.65;
+}
+
+.project-detail__block ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.project-detail__block ul li {
+  position: relative;
+  padding-left: 1.2rem;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+
+.project-detail__block ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.project-detail__tech {
+  flex-direction: row !important;
+  flex-wrap: wrap;
+  gap: 0.5rem !important;
+}
+
+.project-detail__tech li {
+  padding: 0.25rem 0.6rem !important;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs) !important;
+  color: var(--color-ink-faint);
+}
+
+.project-detail__tech li::before {
+  display: none;
+}
+
+.project-detail__cta {
+  margin-top: var(--space-xs);
+}

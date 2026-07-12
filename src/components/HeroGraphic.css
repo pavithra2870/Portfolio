@@ -1,0 +1,188 @@
+.hero-graphic {
+  display: none;
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+.hero-graphic__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* The node diagram only reads well once there's room for it — hidden below 600px. */
+@media (min-width: 600px) {
+  .hero-graphic {
+    display: block;
+  }
+}
+
+/* ---- branch lines (hub to satellites) ---- */
+
+.hg-branch {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  transition: stroke-dashoffset 800ms var(--ease-premium);
+}
+
+.hero-graphic.is-visible .hg-branch {
+  stroke-dashoffset: 0;
+}
+
+/* ---- primary spine edges ---- */
+
+.hg-edge {
+  fill: none;
+  stroke: var(--color-ink-faint);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  transition: stroke-dashoffset 1000ms var(--ease-premium);
+}
+
+.hero-graphic.is-visible .hg-edge {
+  stroke-dashoffset: 0;
+}
+
+/* ---- traveling packets along the spine ---- */
+
+.hg-packet {
+  fill: var(--color-accent);
+  opacity: 0;
+  offset-rotate: 0deg;
+  animation: hgFlow 3.8s var(--ease-premium) infinite;
+  animation-play-state: paused;
+}
+
+.hero-graphic.is-visible .hg-packet {
+  animation-play-state: running;
+}
+
+@keyframes hgFlow {
+  0% { offset-distance: 0%; opacity: 0; transform: scale(0.8); }
+  10% { opacity: 1; transform: scale(1); }
+  88% { opacity: 1; transform: scale(1); }
+  100% { offset-distance: 100%; opacity: 0; transform: scale(0.8); }
+}
+
+/* ---- shared node styling ---- */
+
+.hg-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 620ms var(--ease-premium), transform 620ms var(--ease-premium);
+}
+
+.hero-graphic.is-visible .hg-node {
+  opacity: 1;
+  transform: scale(1);
+  animation: hgBreathe 5s var(--ease-premium) infinite;
+}
+
+.hg-node circle {
+  fill: var(--color-bg-raised);
+  stroke: var(--color-ink-faint);
+  stroke-width: 1.75;
+  transition: stroke var(--duration-fast) var(--ease-premium), fill var(--duration-fast) var(--ease-premium);
+}
+
+.hg-node--hub circle {
+  stroke: var(--color-ink);
+  stroke-width: 2;
+}
+
+.hg-node--dest circle {
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+  fill: var(--color-accent-soft);
+}
+
+.hg-node--satellite circle {
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  fill: var(--color-accent-soft);
+}
+
+@keyframes hgBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+
+/* ---- labels ---- */
+
+.hg-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  fill: var(--color-ink-soft);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 500ms var(--ease-premium), transform 500ms var(--ease-premium);
+}
+
+.hg-label--sat {
+  font-size: 11px;
+  fill: var(--color-ink-faint);
+}
+
+.hero-graphic.is-visible .hg-label {
+  opacity: 0.9;
+  transform: translateY(0);
+}
+
+/* ---- hover feedback ---- */
+
+.hero-graphic__nodes g:hover .hg-node circle,
+.hero-graphic__satellites g:hover .hg-node circle {
+  stroke: var(--color-accent);
+  fill: var(--color-accent-soft);
+}
+
+.hero-graphic__nodes g:hover .hg-label,
+.hero-graphic__satellites g:hover .hg-label {
+  opacity: 1;
+  fill: var(--color-accent-ink);
+  transform: translateY(1px) scale(1.03);
+}
+
+@media (max-width: 640px) {
+  .hg-label {
+    font-size: 12px;
+  }
+  .hg-label--sat {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hg-branch,
+  .hg-edge,
+  .hg-node,
+  .hg-label {
+    transition: none;
+  }
+  .hg-branch,
+  .hg-edge {
+    stroke-dashoffset: 0;
+  }
+  .hg-node,
+  .hg-label {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hg-label.hg-label--sat,
+  .hg-label {
+    opacity: 0.9;
+  }
+  .hg-packet {
+    display: none;
+  }
+}

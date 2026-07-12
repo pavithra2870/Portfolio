@@ -1,0 +1,13 @@
+.section {
+  padding-block: var(--space-xl);
+}
+
+.section--subtle {
+  background: var(--color-bg-subtle);
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 0;
+}
