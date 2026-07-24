@@ -11,7 +11,7 @@ export const techStack = [
   },
   {
     category: 'Backend',
-    items: ['FastAPI', 'Node.js / Express', 'Firebase Cloud Functions', 'Pydantic', 'REST API design'],
+    items: ['FastAPI', 'Node.js / Express', 'Firebase Cloud Functions', 'Pydantic', 'REST API design', 'SQLAlchemy', 'WebSockets'],
   },
   {
     category: 'AI, LLMs & Agentic Systems',
@@ -36,11 +36,11 @@ export const techStack = [
   },
   {
     category: 'Databases & Vector Search',
-    items: ['FAISS', 'MongoDB', 'Firebase Firestore', 'SQLite', 'DynamoDB', 'Pinecone'],
+    items: ['FAISS', 'MongoDB', 'Firebase Firestore', 'SQLite', 'DynamoDB', 'Pinecone', 'PostgreSQL', 'Redis'],
   },
   {
     category: 'Cloud & Deployment',
-    items: ['AWS (Lambda, API Gateway, Cognito)', 'Firebase', 'Docker / Docker Compose', 'GitHub Pages', 'Hugging Face Spaces', 'Google ADK'],
+    items: ['AWS (Lambda, API Gateway, Cognito)', 'Firebase', 'Docker / Docker Compose', 'GitHub Pages', 'Hugging Face Spaces', 'Google ADK', 'Prometheus', 'Grafana'],
   },
   {
     category: 'Developer Tools & Testing',

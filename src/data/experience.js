@@ -38,11 +38,11 @@ export const experience = [
     summary:
       'Worked across search infrastructure, network analytics, and support automation — four distinct systems spanning retrieval, forecasting, and agent orchestration.',
     highlights: [
-      'Architected a production RAG search bot for complex internal documents, adding semantic caching via HNSW to cut inference costs by 25–30% and meaningfully reduce latency.',
-      'Built an end-to-end QoE forecasting system that transforms raw TCP/RTP streams into sliding-window aggregates, with an XGBoost classifier predicting churn risk from jitter and throughput volatility, explained via SHAP for proactive network tuning.',
-     
+      'Architected a production RAG search bot for complex internal documents, adding semantic caching via HNSW to reduce inference costs and latency.',
+      'Designed a Retrieval-Augmented Generation system using OpenAI embeddings and Pinecone vector database for semantic search across technical documentation.',
+      'Implemented chunking strategies and retrieval optimization to improve answer quality for complex technical queries.',
     ],
-    tech: ['Python', 'XGBoost', 'SHAP', 'HNSW', 'n8n', 'OpenAI embeddings', 'Pinecone', 'Google ADK'],
+    tech: ['Python', 'HNSW', 'n8n', 'OpenAI embeddings', 'Pinecone', 'Google ADK'],
   },
   {
     id: 'soul-of-arts',

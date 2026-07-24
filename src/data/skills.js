@@ -12,6 +12,19 @@ export const skillCategories = [
     ],
   },
   {
+    title: 'SRE & Observability',
+    description:
+      'Building systems that monitor, detect, and diagnose infrastructure issues before they become outages — with the incident management and fault injection practices that keep services reliable.',
+    capabilities: [
+      'Observability platform design (metrics, alerts, incidents, diagnosis)',
+      'Prometheus/Grafana integration and RED/USE method monitoring',
+      'Alert engine design with deduplication and escalation logic',
+      'Incident management with full timelines and status transitions',
+      'Fault injection and chaos engineering for reproducible diagnosis',
+      'Linux systems monitoring (CPU, memory, disk, networking metrics)',
+    ],
+  },
+  {
     title: 'Full-Stack Product Engineering',
     description:
       "Shipping complete products end to end — from database schema to deployed UI — not just the parts that are interesting to build.",

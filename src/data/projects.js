@@ -1,5 +1,30 @@
 export const projects = [
   {
+    id: 'pulseops',
+    name: 'PulseOps',
+    oneLiner:
+      'AI-assisted cluster observability and root-cause analysis platform for Linux node fleets with complete detect → alert → incident → diagnose loop.',
+    link: 'https://github.com/pavithra2870/PulseOps',
+    complexity: 'Advanced',
+    problem:
+      'Infrastructure teams need to monitor node fleets, detect issues before they become outages, and diagnose incidents quickly. Existing tools (Prometheus, Grafana, Datadog) are powerful but complex — PulseOps demonstrates understanding of the fundamentals they implement.',
+    solution:
+      'A full-stack observability platform with 32 REST endpoints, WebSocket real-time updates, and Prometheus metrics exposition. The alert engine performs rule-based threshold evaluation with deduplication and warning→critical escalation. Incident management includes full timelines with status transitions. Nine realistic fault injection modes (CPU spike, memory leak, disk full, network outage, etc.) flow through the actual pipeline for chaos engineering. AI diagnosis uses Gemini with structured JSON output and RAG grounding in FAISS-indexed runbooks.',
+    architecture:
+      'FastAPI backend with SQLAlchemy 2.0 async, Alembic migrations, and WebSocket hub for real-time updates. Node agents use psutil for Prometheus-style metrics exposition. PostgreSQL with proper indexing for time-series queries, Redis caching with TTL-based invalidation. Every external dependency (Supabase PostgreSQL, Upstash Redis, Gemini AI, Grafana Cloud) has a zero-credential fallback (SQLite, in-memory cache, deterministic mock, local metrics) for immediate demo capability.',
+    contributions: [
+      'Built the complete backend (FastAPI, SQLAlchemy 2.0 async, Alembic migrations) and frontend (React, Vite, Recharts) with clean layering.',
+      'Implemented the alert engine with rule-based threshold evaluation, deduplication, and escalation logic.',
+      'Built the incident management system with full timelines and status transitions (open → investigating → mitigated → resolved).',
+      'Implemented 9 realistic fault injection modes that flow through the actual pipeline for reproducible diagnosis.',
+      'Integrated AI-assisted root-cause analysis using Gemini with structured JSON output and RAG grounding in FAISS-indexed runbooks.',
+    ],
+    tech: ['Python', 'FastAPI', 'React', 'PostgreSQL', 'Redis', 'Prometheus', 'Grafana', 'WebSockets', 'FAISS', 'Google Gemini', 'Docker', 'SQLAlchemy'],
+    tags: ['SRE', 'Observability', 'Incident Management', 'Fault Injection', 'FastAPI', 'React', 'AI'],
+    challenge:
+      'The core design problem was ensuring the AI assists rather than replaces human judgment — every AI output uses structured JSON with schema validation, and the platform works fully without AI via deterministic fallbacks.',
+  },
+  {
     id: 'nexus',
     name: 'Consultancy AI - Market Intelligence Platform',
     oneLiner:
@@ -214,6 +239,30 @@ export const projects = [
     tags: ['Machine Learning', 'Explainability', 'Fairness', 'LLM Integration', 'FastAPI', 'React'],
     challenge:
       'Bias auditing is rarely included in analytics tooling at all — building it in by default (rather than as an opt-in extra) meant the fairness engine had to run against both churn and conversion models automatically, not on request.',
+  },
+  {
+    id: 'network-qoe',
+    name: 'Network QoE Prediction System',
+    oneLiner:
+      'A telecom intelligence platform predicting silent churn and QoE degradation before users complain, with SHAP-based root-cause analysis.',
+    link: 'https://github.com/pavithra2870/QoE',
+    complexity: 'Advanced',
+    problem:
+      'Telecom operators lose revenue to silent churn — users who quietly reduce usage due to poor network experience without ever filing a complaint. Traditional monitoring only reacts to explicit faults, missing this pattern entirely.',
+    solution:
+      'A dual-model architecture combines LSTM networks with attention (for temporal degradation patterns across session sequences) with XGBoost (for fast, explainable tabular predictions), covering both QoE scoring and churn probability. SHAP values attribute every prediction back to specific network KPIs, so operators get root causes, not just scores.',
+    architecture:
+      'PyTorch LSTM with a dual-head design for simultaneous regression and classification, trained with early stopping, gradient clipping, and OneCycleLR scheduling. A stateless feature-engineering pipeline computes rolling statistics, trend slopes, and decay signals without leaking future data. SHAP TreeExplainer runs against the XGBoost models for both global and per-user explanations, persisted as Parquet for fast dashboard loading.',
+    contributions: [
+      'Designed the dual-model architecture pairing LSTM sequence modeling with XGBoost interpretability.',
+      'Built the leak-safe feature-engineering pipeline (rolling windows, trend slopes, abandonment streaks).',
+      'Implemented the SHAP explainability layer and root-cause ranking system.',
+      'Built the 7-section Streamlit dashboard, including forecast and intervention-recommendation views.',
+    ],
+    tech: ['Python', 'PyTorch', 'XGBoost', 'SHAP', 'Streamlit', 'Plotly', 'scikit-learn', 'Ollama'],
+    tags: ['Deep Learning', 'XGBoost', 'Explainable AI', 'Time Series', 'Streamlit', 'Telecom'],
+    challenge:
+      'Balancing sequence-model accuracy against the need for fast, explainable predictions is what motivated the dual-model design — pure LSTM would have sacrificed interpretability operators need to act on a result.',
   },
   {
     id: 'civicbot',
