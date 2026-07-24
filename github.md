@@ -17,7 +17,7 @@ Currently:
 
 <p align="left">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=python,js,react,vite,tailwind,nodejs,express,mongodb,firebase,aws,docker,git,sklearn,pytorch,fastapi,redis,dynamodb,sqlite,selenium,vscode" />
+    <img src="https://skillicons.dev/icons?i=python,js,react,vite,tailwind,nodejs,express,mongodb,firebase,aws,docker,git,sklearn,pytorch,fastapi,redis,dynamodb,sqlite,selenium,vscode,leaflet,supabase,prometheus,grafana" />
   </a>
 </p>
 
@@ -29,9 +29,9 @@ Currently:
 * **ML / Deep Learning:** PyTorch, scikit-learn, XGBoost, LSTM + Attention, spaCy, FLAIR, DeBERTa, Gensim
 * **Explainable AI:** SHAP, counterfactual XAI, bias/fairness auditing
 * **Voice & Speech:** AssemblyAI
-* **Web Development:** React, Node.js, Express, FastAPI, Vite, Tailwind CSS, Framer Motion
-* **Databases:** MongoDB, Firebase Firestore, DynamoDB, FAISS, SQLite, Redis
-* **Cloud & DevOps:** AWS (Lambda, API Gateway, Cognito, DynamoDB, Bedrock, S3, CloudWatch), Firebase, Docker, Hugging Face Spaces, Render, Vercel
+* **Web Development:** React, Node.js, Express, FastAPI, Vite, Tailwind CSS, Framer Motion, Leaflet.js
+* **Databases:** MongoDB, Firebase Firestore, DynamoDB, FAISS, SQLite, Redis, Supabase (PostgreSQL)
+* **Cloud & DevOps:** AWS (Lambda, API Gateway, Cognito, DynamoDB, Bedrock, S3, CloudWatch), Firebase, Docker, Hugging Face Spaces, Render, Vercel, Prometheus, Grafana
 * **Testing & Tools:** Git, Selenium, pytest, Postman
 
 ---
@@ -48,6 +48,8 @@ Currently:
 * **[OneStop 25](https://onestop-25.onrender.com/)**: year-end reflection app for 2025→2026 — aura calculator, IN/OUT lists, AI-personalized manifestations. Brainrot-coded on purpose, so I can actually track my 2026 goals without opening a spreadsheet.
 * **[SafeSpace](https://github.com/pavithra2870/SafeSpace---Journal)**: AI journaling with an actual feedback loop — Dr. Luna (Groq/Llama 3) reads every entry and returns sentiment, mood, and a nudge. Streaks, heatmaps, gamification, the whole loop.
 * **[CivicBot](https://github.com/pavithra2870/CivicBot)**: report a pothole over WhatsApp, get it triaged by an LLM before a human even looks at it. 100% serverless AWS, because I don't do idle servers.
+* **[AirMind AI](https://github.com/pavithra2870/AirMind-AI)**: urban air quality operating system — XGBoost forecasting, pollution attribution, intervention planning, and dual AI copilots (citizen + commissioner). Transforms reactive monitoring into proactive intervention for Smart City Commissioners.
+* **[PulseOps](https://github.com/pavithra2870/PulseOps)**: AI-assisted cluster observability platform — complete detect → alert → incident → diagnose loop. 32 REST endpoints, WebSocket real-time updates, Prometheus metrics, and RAG-grounded AI diagnosis with FAISS-indexed runbooks.
 
 ### Currently exploring (research, no public repos yet)
 
