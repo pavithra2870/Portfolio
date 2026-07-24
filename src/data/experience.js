@@ -4,6 +4,7 @@ export const experience = [
     company: 'Morph Systems',
     role: 'Product Management & GTM Intern',
     current: true,
+    link: { label: 'poppyfield.ai', href: 'https://poppyfield.ai' },
     summary:
       'Working across product and engineering on an internal AI agent platform — helping shape what gets built next, owning a product line of my own, and contributing to the systems that let the team ship new AI agents quickly and reliably.',
     highlights: [
@@ -42,7 +43,7 @@ export const experience = [
       'Designed a Retrieval-Augmented Generation system using OpenAI embeddings and Pinecone vector database for semantic search across technical documentation.',
       'Implemented chunking strategies and retrieval optimization to improve answer quality for complex technical queries.',
     ],
-    tech: ['Python', 'HNSW', 'n8n', 'OpenAI embeddings', 'Pinecone', 'Google ADK'],
+    tech: ['Python', 'HNSW', 'n8n', 'OpenAI embeddings', 'Pinecone'],
   },
   {
     id: 'soul-of-arts',

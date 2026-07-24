@@ -74,10 +74,9 @@ export default function Hero() {
               </dl>
 
               <div className="hero__proof">
-                <ProofItem to={10} label="Products shipped" />
-                <ProofItem to={4} label="Independent research tracks" />
-                <ProofItem to={750} suffix="+" label="DSA problems solved" />
-                <ProofItem to={20} suffix="+" label="AI agents shipped" />
+                <ProofItem to={10} suffix="+" label="Products shipped" />
+                <ProofItem to={4} label="Research projects" />
+                <ProofItem to={800} suffix="+" label="DSA problems solved" />
               </div>
             </div>
 
