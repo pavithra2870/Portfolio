@@ -132,3 +132,5 @@ The backend is stateless and horizontally scalable. WebSocket fan-out can be ext
 Unlike toy monitoring projects, PulseOps implements the full incident lifecycle with realistic fault injection that flows through the actual pipeline — not mocked endpoints. The AI integration uses structured JSON with schema validation and RAG grounding, not brittle free-text parsing. Every external dependency has a zero-credential fallback, making it immediately demoable while still being production-shaped with managed services.
 
 This is a portfolio piece that demonstrates I can build, operate, and reason about complex infrastructure systems — not just use them.
+
+link: https://github.com/pavithra2870/PulseOps

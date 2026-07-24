@@ -210,3 +210,5 @@ This project demonstrates proficiency in:
 - **Product thinking** focused on user needs, trust, and actionability
 
 The system represents a complete, production-grade application that combines cutting-edge AI with practical urban management needs, demonstrating the ability to deliver complex, multi-disciplinary solutions that solve real-world problems.
+
+link: https://github.com/pavithra2870/AirMind-AI

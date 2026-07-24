@@ -7,7 +7,7 @@ export const techStack = [
   },
   {
     category: 'Frontend',
-    items: ['React', 'Vite', 'Firebase (Firestore, Auth)', 'Recharts', 'Framer Motion', 'Tailwind CSS', 'Axios'],
+    items: ['React', 'Vite', 'Firebase (Firestore, Auth)', 'Recharts', 'Framer Motion', 'Tailwind CSS', 'Axios', 'Leaflet.js'],
   },
   {
     category: 'Backend',

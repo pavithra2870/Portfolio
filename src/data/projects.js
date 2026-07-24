@@ -288,4 +288,30 @@ export const projects = [
     challenge:
       'Trust had to run both directions — citizens needed confidence a text actually gets acted on, and city staff needed confidence AI triage wouldn\'t bury a genuine emergency, so severity classification had to run automatically on every report rather than waiting for a human to notice it first.',
   },
+  {
+    id: 'airmind-ai',
+    name: 'AirMind AI',
+    oneLiner:
+      'A comprehensive urban air quality management system that transforms cities from reactive pollution monitoring to proactive intervention with forecasting, attribution, intervention planning, and AI-powered guidance.',
+    link: 'https://github.com/pavithra2870/AirMind-AI',
+    complexity: 'Advanced',
+    problem:
+      'Most air quality tools tell you pollution is bad after it\'s already bad. They lack predictive capabilities, actionable insights, and the ability to explain why air quality is deteriorating or what to do about it. City administrators operate without a unified system to forecast pollution, understand its sources, evaluate intervention strategies, or communicate effectively with citizens.',
+    solution:
+      'An integrated operating system that combines real-time monitoring, machine learning forecasting, source attribution, intervention planning, and grounded AI assistance—all in one platform. Features include a live city intelligence dashboard, XGBoost-based AQI forecasting, pollution attribution agent, intervention planner with impact estimation, scenario simulator, and dual AI copilots for citizens and commissioners.',
+    architecture:
+      'Full-stack with React + Vite frontend and FastAPI backend with modular architecture (api → services → agents → ai/rag). Data pipeline ingests live data from WAQI API with historical backfill from OpenWeather, stored in Supabase (Postgres). XGBoost forecaster with feature engineering and bounded recursive prediction. RAG pipeline uses MiniLM embeddings, FAISS vector store, and Gemini LLM with similarity threshold gating. Every external dependency has a fallback path for graceful degradation.',
+    contributions: [
+      'Built the complete full-stack system with React + Vite frontend and FastAPI backend with clean modular architecture.',
+      'Implemented the XGBoost forecast engine with feature engineering, bounded recursive prediction, and confidence bands.',
+      'Built the pollution attribution agent that computes source contributions from live pollutant concentrations.',
+      'Implemented the intervention planner with ranked measures, impact estimation, and diminishing-returns aggregation.',
+      'Built the RAG-powered Citizen and Commissioner copilots with grounded answers, confidence scores, and refusal to hallucinate.',
+      'Designed the graceful degradation strategy ensuring the system never breaks during demonstrations.',
+    ],
+    tech: ['React', 'Vite', 'FastAPI', 'XGBoost', 'MiniLM', 'FAISS', 'Google Gemini', 'Supabase', 'Leaflet.js', 'Recharts', 'WAQI API', 'OpenWeather API'],
+    tags: ['Full-Stack', 'Machine Learning', 'RAG', 'Geospatial', 'Smart City', 'FastAPI', 'React', 'AI/ML'],
+    challenge:
+      'The core design problem was ensuring the system never fails during demonstrations — every external dependency (MiniLM, FAISS, trained model, backend APIs) has a fallback path, from hashed embeddings to numpy search to analytic projection to frontend mock layers, enabling immediate demo capability with zero API keys.',
+  },
 ]
