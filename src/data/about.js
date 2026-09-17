@@ -8,7 +8,7 @@ export const about = {
 "i am quick and curious.",
 "i can build and also market."
   ],
-  dsa: '750+ problems solved across LeetCode, GeeksforGeeks, and CodeChef.',
+  dsa: '800+ problems solved across LeetCode, GeeksforGeeks, and CodeChef.',
   interests: [
     'Product Management',
     'Agentic AI',

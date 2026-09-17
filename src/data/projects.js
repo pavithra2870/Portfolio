@@ -129,6 +129,50 @@ export const projects = [
   challenge:
     'LLM recommendations are opaque and can vary across models, prompts, personas, and regions. The pipeline therefore had to make recommendation visibility measurable while separating observed LLM behaviour from hypotheses about why that behaviour occurs.'
 },
+{
+  id: 'archestra-mcp-hackathon',
+  name: 'Archestra Agentic Hackathon',
+  oneLiner: 'Built four AI agents for career planning, project discovery, research, and side-project collaboration as open-source hackathon contributions.',
+  link: 'https://github.com/archestra-ai/apps-gallery',
+
+  problem: 'AI assistants become significantly more useful when they can reason over a user’s real-world tools and data, but many agent experiences remain generic and disconnected from personal context.',
+
+  solution: 'Built and contributed four specialized agents to the Archestra Apps Hackathon, using MCP-connected tools to turn personal data and external knowledge into actionable workflows — matching projects to jobs, deciding what to do with abandoned projects, exploring research literature, and finding collaborators for side projects.',
+
+  architecture: 'MCP-powered agent workflows built within Archestra, combining specialized prompts, tool calls, external data sources, and multi-step reasoning into interactive app experiences. Each agent is designed around a focused workflow rather than a generic chatbot.',
+
+  contributions: [
+    'Built a Project-to-Job Matcher that connects career context, projects, skills, and target roles to identify gaps and generate a prioritized roadmap for becoming job-ready.',
+    'Built Project Graveyard, an agent that analyzes GitHub repositories, activity, technologies, issues, and history to decide whether abandoned projects should be revived, archived, merged, showcased, or turned into startup ideas.',
+    'Built a Research Paper Digest agent that searches research literature, summarizes and compares papers, follows citations and references, and surfaces open problems, future work, datasets, and potential research directions.',
+    'Built Side Project Tinder, a collaboration-matching agent that connects people based on project ideas, complementary skills, and missing roles to identify potential co-builders.',
+    'Designed the agents around workflows, turning external tools and personal context into structured recommendations rather than simple conversational responses.',
+    'Contributed the resulting agent experiences to Archestra’s open-source Apps Hackathon gallery as replayable interactive app sessions.'
+  ],
+
+  tech: [
+    'Archestra',
+    'AI Agents',
+    'LLMs',
+    'Tool Calling',
+    'Multi-Step Workflows',
+    'GitHub',
+    'Web Research'
+  ],
+
+  tags: [
+    'Open Source',
+    'Hackathon',
+    'AI Agents',
+    'Agentic AI',
+    'LLM',
+    'Product Engineering',
+    'Developer Tools',
+    'Research'
+  ],
+
+  challenge: 'The challenge was designing agents that actually benefit from tool access rather than behaving like generic chatbots. Each workflow had to translate fragmented external information into a useful decision or action while keeping the interaction simple enough to work as a focused product experience.'
+},
   {
     id: 'nurture-ai',
     name: 'NurtureAI',
