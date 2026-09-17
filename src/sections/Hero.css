@@ -108,6 +108,7 @@
   text-transform: lowercase;
   letter-spacing: 0.16em;
   color: var(--color-accent);
+  margin-top: -70px;
   margin-bottom: var(--space-sm);
 }
 
@@ -205,6 +206,7 @@
 .hero__stats dd {
   margin: 0;
   font-size: var(--fs-base);
+  width: max-content;
   color: var(--color-ink);
 }
 
@@ -224,6 +226,7 @@
   border-radius: var(--radius-sm);
   transition: transform 420ms var(--ease-premium), background var(--duration-fast) var(--ease-premium);
   will-change: transform;
+  width: max-content;
 }
 
 .hero__proof-item:hover {

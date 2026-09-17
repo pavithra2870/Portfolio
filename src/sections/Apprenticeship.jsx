@@ -11,8 +11,6 @@ export default function Apprenticeship() {
         <SectionHeading
           index="03"
           eyebrow="Apprenticeships"
-          title="less lecture, more real problems"
-          intro="Structured programs that traded lecture time for actual business problems."
         />
 
         {apprenticeships.map((item) => (

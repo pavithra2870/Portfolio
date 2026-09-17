@@ -15,7 +15,7 @@ export default function Projects() {
         <SectionHeading
           index="04"
           eyebrow="Projects"
-          title="Real problems, real products, real impact"
+          title="real problems, real solutions."
         />
 
         <Reveal as="div" stagger className="projects__grid">
@@ -27,7 +27,6 @@ export default function Projects() {
 
       {active && (
         <Modal onClose={() => setActive(null)} labelledBy="project-modal-title">
-          <p className="project-detail__complexity">{active.complexity}</p>
           <h3 id="project-modal-title" className="project-detail__title">
             {active.name}
           </h3>

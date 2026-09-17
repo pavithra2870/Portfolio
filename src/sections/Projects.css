@@ -28,21 +28,15 @@
   }
 }
 
-.project-detail__complexity {
-  font-family: var(--font-mono);
-  font-size: var(--fs-2xs);
-  text-transform: lowercase;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-  margin-bottom: var(--space-xs);
-}
+
 
 .project-detail__title {
   font-size: var(--fs-xl);
   margin-bottom: var(--space-xs);
   padding-right: 2rem;
+  transform: translateY(-10px);
+  margin-top: -20px;
 }
-
 .project-detail__line {
   font-size: var(--fs-md);
   color: var(--color-ink-soft);

@@ -1,5 +1,6 @@
 .experience__list {
   display: flex;
+  margin-top: -20px;
   flex-direction: column;
 }
 

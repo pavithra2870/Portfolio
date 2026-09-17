@@ -1,20 +1,31 @@
 export const experience = [
   {
-    id: 'morph-systems',
-    company: 'Morph Systems',
-    role: 'Product Management & GTM Intern',
-    current: true,
-    link: { label: 'poppyfield.ai', href: 'https://poppyfield.ai' },
-    summary:
-      'Working across product and engineering on an internal AI agent platform — helping shape what gets built next, owning a product line of my own, and contributing to the systems that let the team ship new AI agents quickly and reliably.',
-    highlights: [
-      'Own an AI agent product line end to end, iterating through multiple rounds of quality hardening until output is consistently business-ready.',
-      'Contributed to a growing internal agent library that has shipped 20+ AI agents into production.',
-      'Contribute to platform reliability and internal tooling that make it faster and safer to build and ship new agents.',
-      'Work cross-functionally between product and engineering, translating a plain-language brief into a scoped, shippable feature.',
-      'Support go-to-market execution for new product surfaces, from positioning through launch.',
-    ],
-    tech: ['Product Strategy', 'Go-To-Market', 'AI Agent Platforms', 'Cross-Functional Collaboration'],
+    
+  id: 'morph-systems',
+  company: 'Morph Systems',
+  role: 'Product Management & GTM',
+  current: false,
+  link: { label: 'poppyfield.ai', href: 'https://poppyfield.ai' },
+  summary:
+    'Worked across product, engineering, and growth on an AI agent platform — building agent experiences, improving platform reliability, and shaping what gets built and launched next.',
+  highlights: [
+    'Built and shipped AI agents end to end, breaking complex workflows into reusable skills and hardening outputs through iterative evaluation.',
+    'Built platform infrastructure including a dynamic tool registry, usage/cost tracking, workspace file management, and LLM reliability fixes.',
+    'Hardened the agent build pipeline with automated quality evaluation, security checks, and review stages for safer, more reliable agent releases.',
+    'Built user-facing product features across the agent marketplace and workspace, including agent discovery, chat deep links, file surfacing, and landing-page experiences.',
+    'Ran hands-on product testing, identified UX and agent-quality gaps, and turned recurring issues into platform-level product improvements.',
+    'Worked on competitive research, product prioritization, GTM strategy, and launch content for new AI product surfaces.'
+  ],
+  tech: [
+    'AI Agent Platforms',
+    'Python',
+    'FastAPI',
+    'JavaScript',
+    'Growth', 'Product',
+    'Gemini',
+    'Product Strategy',
+    'GTM'
+  ]
   },
   {
     id: 'phantos-ai',
@@ -40,7 +51,7 @@ export const experience = [
       'Worked across search infrastructure, network analytics, and support automation — four distinct systems spanning retrieval, forecasting, and agent orchestration.',
     highlights: [
       'Architected a production RAG search bot for complex internal documents, adding semantic caching via HNSW to reduce inference costs and latency.',
-      'Designed a Retrieval-Augmented Generation system using OpenAI embeddings and Pinecone vector database for semantic search across technical documentation.',
+      'Designed a Retrieval-Augmented Generation system using vector embeddings and vector database for semantic search across technical documentation.',
       'Implemented chunking strategies and retrieval optimization to improve answer quality for complex technical queries.',
     ],
     tech: ['Python', 'HNSW', 'n8n', 'OpenAI embeddings', 'Pinecone'],
@@ -48,11 +59,11 @@ export const experience = [
   {
     id: 'soul-of-arts',
     company: 'Soul of Arts',
-    role: 'Full Stack Developer, Designer & Launch Consultant (independent)',
+    role: 'Full Stack, Designer & Launch',
     current: false,
     link: { label: 'soulofarts.in', href: 'https://soulofarts.in' },
     summary:
-      'A fine art studio with no prior digital presence. I owned the entire process of turning it into a credible, discoverable, conversion-ready brand - design, engineering, SEO, and launch - as the sole contributor.',
+      'An art studio with no prior digital presence. I owned the entire process of turning it into a credible, discoverable, conversion-ready brand - design, engineering, SEO, and launch - as the sole contributor.',
     highlights: [
       'Designed and built the full site as a single-page application in HTML, CSS, and vanilla JavaScript — glassmorphism nav, staggered hero grid, masonry gallery with lightbox, and scroll-triggered reveals via the Intersection Observer API — with no frameworks or build tools.',
       'Implemented complete on-page SEO: keyword-targeted meta, canonical tags, Open Graph and Twitter Card markup, and Schema.org LocalBusiness structured data for rich search results.',

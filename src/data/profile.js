@@ -24,9 +24,7 @@ export const profile = {
     },
   ],
   current: [
-    { role: 'AI Marketing Skill Building Apprentice', org: 'Flyrank AI' },
-    { role: 'Product Management & GTM Intern', org: 'Morph Systems' },
-    { role: 'Selected participant', org: 'Amazon ML Summer School 2026' },
+    { role: 'final year CS student', org: 'VIT Chennai' },
   ],
   certifications: [
     {

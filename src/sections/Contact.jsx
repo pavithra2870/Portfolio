@@ -12,8 +12,7 @@ export default function Contact() {
           align="center"
           index="07"
           eyebrow="Contact"
-          title="open to the next hard problem"
-          intro="Open but not limited to product management, AI engineering, and full-stack roles — and always happy to talk about a project in more depth."
+          title="connect with me."
         />
 
         <Reveal className="contact__actions">

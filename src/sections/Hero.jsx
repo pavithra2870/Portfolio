@@ -40,8 +40,8 @@ export default function Hero() {
                 <span className="hero__caret">_</span>
               </p>
               <h1 className="hero__title">
-                i turn <span className="text-acronym">AI</span> research into{' '}
-                <em>agents, pipelines and products</em>
+                hi
+                <em> I am Pavithra</em>
               </h1>
               <p className="hero__subtitle">
                 B.Tech Computer Science (AI &amp; ML) student at VIT Chennai.
@@ -58,25 +58,24 @@ export default function Hero() {
               <dl className="hero__stats">
                 <div>
                   <dt>focus</dt>
-                  <dd>AI/ML &amp; SWE</dd>
+                  <dd>AI/ML, Product &amp; SWE</dd>
                 </div>
-                <div>
-                  <dt>
-                    <span className="hero__live-dot" aria-hidden="true" />
-                    currently
-                  </dt>
-                  <dd>Morph Systems</dd>
-                </div>
+                
                 <div>
                   <dt>based in</dt>
                   <dd>{profile.location}</dd>
                 </div>
               </dl>
-
+              <div>
+                  <dt>
+                    <span className="hero__live-dot" aria-hidden="true" />
+                   {/* currently*/}
+                  </dt>
+                  <dd>{/*Morph Systems*/}</dd>
+                </div>
               <div className="hero__proof">
-                <ProofItem to={10} suffix="+" label="Products shipped" />
-                <ProofItem to={4} label="Research projects" />
-                <ProofItem to={800} suffix="+" label="DSA problems solved" />
+                <ProofItem to={10} suffix="+" label="Projects" />
+                <ProofItem to={800} suffix="+" label="DSA problems" />
               </div>
             </div>
 

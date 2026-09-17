@@ -14,7 +14,7 @@ export default function About() {
     <section id="about" className="about section">
       <div className="container about__grid">
         <div className="about__copy">
-          <SectionHeading index="01" eyebrow="About" title="product thinking, engineering depth, AI/ML systems." />
+          <SectionHeading index="01" eyebrow="About" title="about me." />
           {about.paragraphs.map((p, i) => (
             <Reveal as="p" className="about__paragraph" key={i}>
               {p}

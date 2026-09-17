@@ -10,7 +10,7 @@ export const timeline = [
     id: 'vit',
     period: '2023 – 2027',
     title: 'VIT Chennai',
-    detail: 'B.Tech, Computer Science with Artificial Intelligence & Machine Learning · CGPA 9.25/10',
+    detail: 'B.Tech, Computer Science with AI/ML · CGPA 9.25/10',
     type: 'education',
   },
   {
@@ -30,15 +30,15 @@ export const timeline = [
   {
     id: 'soul-of-arts',
     period: 'June 2026',
-    title: 'Full Stack Developer, Designer & Launch Consultant',
-    detail: 'Soul of Arts (independent)',
+    title: 'Full Stack, Design & Business',
+    detail: 'Soul of Arts',
     type: 'experience',
   },
   {
     id: 'morph',
-    period: 'May 2026 - Current',
+    period: 'May 2026 - Sep 2026',
     title: 'Product Management & GTM Intern',
     detail: 'Morph Systems',
-    type: 'current',
+    type: 'experience',
   },
 ]

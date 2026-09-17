@@ -16,8 +16,8 @@ export default function Timeline() {
       <div className="container">
         <SectionHeading
           eyebrow="Path"
-          title="How it fits together"
-          intro="Education, apprenticeships, and hands-on work — running in parallel, not in sequence."
+          title="Timeline"
+          intro="Education and hands-on experience."
         />
 
         <Reveal as="ol" className="timeline">
