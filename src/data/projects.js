@@ -4,7 +4,7 @@ export const projects = [
     name: 'Consultancy AI - Market Intelligence Platform',
     oneLiner:
       'A local-first AI consultancy platform — 8 research agents and 4 enterprise modules combining classical NLP, deep learning, and a local LLM.',
-    link: 'https://github.com/pavithra2870/Consultancy-AI',
+    links: { github: 'https://github.com/pavithra2870/Consultancy-AI' },
  
     problem:
       'Manual market research and document analysis are slow and inconsistent, and most AI alternatives either lack analytical depth or require sending sensitive documents to the cloud.',
@@ -28,7 +28,7 @@ export const projects = [
     name: 'CivicBot',
     oneLiner:
       'A fully serverless WhatsApp assistant that lets citizens report and track civic issues, with AI-driven triage for municipal staff.',
-    link: 'https://github.com/pavithra2870/CivicBot',
+    links: { github: 'https://github.com/pavithra2870/CivicBot' },
     problem:
       'Reporting civic issues is high-friction — citizens have to navigate outdated portals or dedicated apps, so many issues go unreported, and the reports that do arrive are unstructured and manually triaged, leaving critical problems queued behind trivial ones.',
     solution:
@@ -47,11 +47,127 @@ export const projects = [
       'Trust had to run both directions — citizens needed confidence a text actually gets acted on, and city staff needed confidence AI triage wouldn\'t bury a genuine emergency, so severity classification had to run automatically on every report rather than waiting for a human to notice it first.',
   },
   {
+  id: 'meridian',
+  name: 'Meridian - AI Risk Intelligence & Portfolio Stress Testing',
+  oneLiner:
+    'An offline-first financial risk intelligence platform that transforms global news into explainable risk signals, constrained portfolio rebalancing recommendations, and multi-asset stress-test scenarios.',
+
+  problem:
+    'Financial risk signals are buried across global news, financial articles, market headlines, and social media. Sentiment-only tools overlook event severity, source consensus, volatility, and portfolio exposure, while black-box AI summaries lack the auditability required for institutional risk decisions. Generic stress tests also fail to show how the same event affects different portfolios.',
+
+  solution:
+    'Built Meridian, a live risk-intelligence desk that ingests GDELT events and themes, financial news, finance tweets, and Yahoo Finance data to generate structured risk signals with explainable impact scores from 1 to 10. Seven factors — event severity, sentiment strength, confidence, entity relevance, source consensus, volatility regime, and novelty — contribute to every score. Two downstream engines turn these signals into actionable decision support: a Tactical Rebalancer recommends constrained weight changes across a 15-stock index, while a Strategic Stress Lab quantifies the impact of live events across four synthetic institutional portfolios containing 155 positions. An optional local AI copilot explains backend-computed results in natural language. The application runs offline using committed datasets, without API keys or login, and refreshes live data when network access is available.',
+
+  architecture:
+    'Python 3.10 and FastAPI backend with Pydantic schemas, a modular risk-engine pipeline, SQLite storage, and precomputed analytical outputs. The ingestion pipeline cleans and deduplicates approximately 50,000 documents, links companies to tickers and sectors, classifies events, evaluates sentiment, aggregates source consensus, and generates structured risk signals. A seven-factor deterministic scoring engine feeds the rebalancing and stress-testing services. The rebalancer applies stock-weight bounds, sector caps, total-weight constraints, and turnover limits. The stress engine models equities, bonds, loans, options, swaps, and credit default swaps using configurable event-to-shock assumptions. A background refresh worker fetches GDELT and market data, rebuilds results when inputs change, swaps the database atomically, and invalidates stale caches. The React 18 + Vite frontend renders typed API responses using custom CSS and hand-built SVG charts, with no UI framework or charting library. An optional Ollama-powered LLM explains deterministic results, with template-based fallback when unavailable.',
+
+  contributions: [
+    'Designed the end-to-end risk-intelligence pipeline, transforming 50,153 documents into 5,345 structured risk signals across 12 event classes.',
+    'Implemented a deterministic seven-factor risk-impact scoring model with factor-level explanations, source consensus, entity relevance, volatility, and novelty.',
+    'Trained and evaluated a TF-IDF + logistic regression sentiment classifier, achieving 0.741 accuracy and 0.732 macro-F1 on held-out financial text, outperforming the evaluated zero-shot FinBERT baseline.',
+    'Built company entity resolution using a company gazetteer, aliases, ticker patterns, cashtags, and GDELT organization tags.',
+    'Developed a Tactical Rebalancer for a 15-stock index with constrained portfolio weights, sector exposure limits, turnover control, and plain-English explanations.',
+    'Engineered a Strategic Stress Lab covering four synthetic portfolios and 155 positions across equities, fixed income, loans, options, swaps, and credit default swaps.',
+    'Implemented quantitative risk calculations including volatility, beta, covariance, bond duration and convexity, Black-Scholes Greeks, DV01, CS01, stress-severity curves, and break-even analysis.',
+    'Built a resilient background refresh system with atomic database swaps, cache invalidation, source-level failure handling, and offline snapshot fallbacks.',
+    'Integrated an optional local Ollama copilot that explains backend-computed facts without performing financial calculations, with deterministic template fallback.',
+    'Developed the React frontend, custom SVG visualizations, and editorial financial-dashboard design system while keeping all business logic and financial calculations in the backend.',
+    'Created reproducible data-processing workflows, project documentation, and automated pytest coverage for the engine, API, and calculations.'
+  ],
+
+  tech: [
+    'Python 3.10',
+    'FastAPI',
+    'Uvicorn',
+    'Pydantic',
+    'React 18',
+    'Vite',
+    'JavaScript',
+    'Custom CSS',
+    'SQLite',
+    'Pandas',
+    'NumPy',
+    'SciPy',
+    'scikit-learn',
+    'TF-IDF',
+    'Logistic Regression',
+    'FinBERT',
+    'Hugging Face Transformers',
+    'PyTorch',
+    'Ollama',
+    'GDELT',
+    'Yahoo Finance',
+    'yfinance',
+    'pytest',
+    'Git',
+    'GitHub'
+  ],
+
+  tags: [
+    'AI',
+    'NLP',
+    'Financial Risk',
+    'FinTech',
+    'Risk Intelligence',
+    'Sentiment Analysis',
+    'Explainable AI',
+    'Portfolio Rebalancing',
+    'Stress Testing',
+    'Quantitative Finance',
+    'Data Engineering',
+    'Local LLM',
+    'Offline-First',
+    'React',
+    'FastAPI'
+  ],
+
+  challenge:
+    'Building a reliable end-to-end risk platform required balancing analytical depth, explainability, and resilience across multiple data sources and financial instruments. A key challenge was avoiding the assumption that negative sentiment automatically means high risk. The system combines seven factors into a deterministic impact score, keeps financial calculations independent of LLM outputs, and uses configurable assumptions for multi-asset stress testing. I also addressed stale caches and inconsistent live-versus-replayed data during refreshes, implemented atomic database replacement and offline fallbacks, and evaluated sentiment models empirically rather than assuming a larger pretrained model would perform better. On held-out data, the lightweight TF-IDF classifier outperformed the evaluated zero-shot FinBERT baseline, so it became the default model.',
+
+  metrics: {
+    documentsProcessed: '50,153',
+    structuredRiskSignals: '5,345',
+    highImpactSignals: 19,
+    eventClasses: 12,
+    riskScoringFactors: 7,
+    sentimentModelAccuracy: '74.1%',
+    sentimentModelMacroF1: '73.2%',
+    zeroShotFinBERTAccuracy: '56.0%',
+    syntheticPortfolios: 4,
+    portfolioPositions: 155,
+    liveRefreshInterval: '15 minutes',
+    automatedTests: 11
+  },
+
+  highlights: [
+    'Processed 50,153 documents into 5,345 structured risk signals.',
+    'Achieved 0.741 held-out accuracy with the locally trained TF-IDF sentiment classifier versus 0.560 for the evaluated zero-shot FinBERT baseline.',
+    'Demonstrated portfolio-specific risk: the same geopolitical event produced a modeled loss of 6.50% for the Global Growth Fund versus 0.23% for the Conservative Allocation.',
+    'Implemented constrained rebalancing and multi-asset stress testing using explicit, configurable assumptions.',
+    'Designed an offline-first application with no required API keys, login, or paid services.'
+  ],
+
+  challengeContext:
+    'Built for the S&P Global and CRISIL Campus Hackathon 2026, addressing AI/NLP-driven risk intelligence from unstructured data for tactical rebalancing and strategic portfolio stress testing.',
+
+  limitations:
+    'The portfolios are synthetic, and stress-test results use simplified, configurable assumptions rather than a validated regulatory methodology. Some historical news and social datasets are replayed into the current analysis window; only designated live sources provide genuinely current data. The reported metrics reflect the project results measured on October 10, 2026, and should be presented with that context. The sentiment evaluation compares a locally trained classifier against a zero-shot FinBERT baseline, not a fine-tuned FinBERT model.',
+
+  links: {
+    github: 'https://github.com/pavithra2870/VIT-Pavithra-SP-Hackathon',
+    demo: 'https://vimeo.com/1234679155?fl=ip&fe=ec'
+  }
+},
+  {
     id: 'compliance-ai',
     name: 'ComplianceAI',
     oneLiner:
       'AI-powered call-center compliance monitoring for Tanglish/Hinglish conversations, with explainable SOP validation and semantic search.',
-    link: 'https://github.com/pavithra2870/Call-Center-Compliance',
+    links: { 
+      github: 'https://github.com/pavithra2870/Call-Center-Compliance',
+      live: 'https://huggingface.co/spaces/pavithra2870/call-analytics',
+      demo: 'https://drive.google.com/file/d/1MXlfdsomUcq8Tgk87AFkKeQa-ugFOjAa/view?usp=sharing'
+    },
     problem:
       'Call centers in multilingual regions must manually review thousands of recordings for SOP compliance, and standard English-only NLP models fail on the mixed-language (Tanglish/Hinglish) conversations common in Indian customer service.',
     solution:
@@ -77,8 +193,10 @@ export const projects = [
   oneLiner:
     'Research pipeline that audits LLM product recommendations for commercial bias using Share of Model, SHAP, and agentic analysis.',
 
-  link: 'https://github.com/pavithra2870/GEO-Bias-Analyzer',
-  demo: 'https://pavithra2870.github.io/GEO-Bias-Analyzer/',
+  links: {
+    github: 'https://github.com/pavithra2870/GEO-Bias-Analyzer',
+    live: 'https://pavithra2870.github.io/GEO-Bias-Analyzer/',
+  },
 
 
   problem:
@@ -133,7 +251,7 @@ export const projects = [
   id: 'archestra-mcp-hackathon',
   name: 'Archestra Agentic Hackathon',
   oneLiner: 'Built four AI agents for career planning, project discovery, research, and side-project collaboration as open-source hackathon contributions.',
-  link: 'https://github.com/archestra-ai/apps-gallery',
+  links: { github: 'https://github.com/archestra-ai/apps-gallery' },
 
   problem: 'AI assistants become significantly more useful when they can reason over a user’s real-world tools and data, but many agent experiences remain generic and disconnected from personal context.',
 
@@ -178,7 +296,10 @@ export const projects = [
     name: 'NurtureAI',
     oneLiner:
       'A bilingual AI parenting assistant with a deterministic safety layer that guarantees emergency escalation regardless of what the LLM says.',
-    link: 'https://github.com/pavithra2870/NurtureAI',
+    links: { 
+      github: 'https://github.com/pavithra2870/NurtureAI',
+      demo: 'https://www.loom.com/share/7e8c1efae431433b91e66ba7ad727644',
+    },
     problem:
       'Generic AI chatbots are unsuitable for medical-adjacent parenting questions because they can understate risk or fail to escalate — and a confident-but-wrong answer at 2 a.m. is worse than no answer at all.',
     solution:
@@ -200,7 +321,8 @@ export const projects = [
   id: 'adv-audit',
   name: 'Adv-Audit',
   oneLiner: 'Neuro-symbolic AI system for auditing RTB decisions with explainability, bias detection, and human-in-the-loop control.',
-  link: 'https://github.com/pavithra2870/Adv-Audit',
+  links: { 
+    github: 'https://github.com/pavithra2870/Adv-Audit' },
 
   problem: 'Real-Time Bidding systems make ad-buying decisions in milliseconds, but advertisers often cannot see why individual bids were made, whether demographic disparities exist, or how to correct problematic model behavior.',
 
@@ -255,7 +377,9 @@ export const projects = [
   id: 'fact-knowledge-layer',
   name: 'Fact Knowledge Layer',
   oneLiner: 'Evidence-first document intelligence system that extracts verifiable facts and distinguishes contradictions from contextual differences across PDFs.',
-  link: 'https://github.com/pavithra2870/Fact-Knowledge-Layer',
+  links: { 
+    github: 'https://github.com/pavithra2870/Fact-Knowledge-Layer',
+   demo: 'https://drive.google.com/file/d/16L4CESY34hxRvXIwT1Rzp769igvw5DJu/view?usp=drive_link' },
 
   problem: 'Comparing facts across reports, filings, and research documents is difficult because different values may reflect legitimate differences in time period, geography, units, or estimate status. Naive document AI systems often flag these as contradictions or provide answers without verifiable evidence.',
 
@@ -312,7 +436,10 @@ export const projects = [
     name: 'AirMind AI',
     oneLiner:
       'A comprehensive urban air quality management system that transforms cities from reactive pollution monitoring to proactive intervention with forecasting, attribution, intervention planning, and AI-powered guidance.',
-    link: 'https://github.com/pavithra2870/AirMind-AI',
+    links: { 
+      github: 'https://github.com/pavithra2870/AirMind-AI',
+      demo: 'https://drive.google.com/file/d/15e0IqJD1AC2Cr126bHu_KaIrITI8jrEm/view?usp=drive_link',
+     },
     problem:
       'Most air quality tools tell you pollution is bad after it\'s already bad. They lack predictive capabilities, actionable insights, and the ability to explain why air quality is deteriorating or what to do about it. City administrators operate without a unified system to forecast pollution, understand its sources, evaluate intervention strategies, or communicate effectively with citizens.',
     solution:
@@ -337,7 +464,9 @@ export const projects = [
     name: 'Product Intelligence Engine (Mercado)',
     oneLiner:
       'A microservices product-research platform that turns scattered user feedback into a financial risk report — built on entirely free-tier infrastructure.',
-    link: 'https://github.com/pavithra2870/Product-Research',
+    links: { 
+      live: 'https://huggingface.co/spaces/pavithra2870/product_research',
+      github: 'https://github.com/pavithra2870/Product-Research' },
     problem:
       'Product teams rarely have time to manually aggregate Reddit threads, app-store reviews, and forum posts into a coherent competitive picture, so decisions get made on anecdote instead of signal.',
     solution:
@@ -360,7 +489,9 @@ export const projects = [
     name: 'OneStop 25',
     oneLiner:
       'A Gen Z year-end reflection app — aura points, IN/OUT lists, and AI-personalized affirmations, built around a specific cultural moment.',
-    link: 'https://github.com/pavithra2870/One-Stop-25',
+    links: { 
+      live: 'https://onestop-25.onrender.com/',
+      github: 'https://github.com/pavithra2870/One-Stop-25' },
     problem:
       'Existing goal-setting and journaling tools are either too clinical (productivity software) or too generic (template journals) for how Gen Z actually processes a year — through humor, cultural shorthand, and peer validation.',
     solution:
@@ -382,7 +513,7 @@ export const projects = [
   id: 'helm-rank',
   name: 'HELM-Rank',
   oneLiner: 'AI-powered exam grading platform combining OCR, knowledge grounding, Elo ranking, and teacher-aligned RLHF.',
-  link: 'https://github.com/pavithra2870/HELM-Rank',
+  links: { github: 'https://github.com/pavithra2870/HELM-Rank' },
 
   problem: 'Manual exam grading is slow, inconsistent, and difficult to audit, while existing automated graders either rely on shallow keyword matching or produce opaque LLM-based scores without teacher feedback loops.',
 
@@ -437,7 +568,7 @@ export const projects = [
     name: 'Consumer Intelligence Platform',
     oneLiner:
       'An end-to-end consumer analytics platform combining ML segmentation, predictive modeling, LLM personas, and fairness auditing.',
-    link: 'https://github.com/pavithra2870/Consumer-Segmentation',
+    links: { github: 'https://github.com/pavithra2870/Consumer-Segmentation' },
     problem:
       'Understanding customer segments, predicting churn, and estimating lifetime value usually requires a dedicated data science team — putting real analytics out of reach for smaller product and marketing teams.',
     solution:
@@ -460,7 +591,7 @@ export const projects = [
     name: 'Network QoE Prediction System',
     oneLiner:
       'A telecom intelligence platform predicting silent churn and QoE degradation before users complain, with SHAP-based root-cause analysis.',
-    link: 'https://github.com/pavithra2870/QoE',
+    links: { github: 'https://github.com/pavithra2870/QoE' },
     problem:
       'Telecom operators lose revenue to silent churn — users who quietly reduce usage due to poor network experience without ever filing a complaint. Traditional monitoring only reacts to explicit faults, missing this pattern entirely.',
     solution:
@@ -483,7 +614,7 @@ export const projects = [
     name: 'SafeSpace',
     oneLiner:
       'A full-stack AI journaling platform where every entry gets real-time sentiment analysis, mood detection, and an AI companion\'s feedback.',
-    link: 'https://github.com/pavithra2870/SafeSpace---Journal',
+    links: { github: 'https://github.com/pavithra2870/SafeSpace---Journal' },
     problem:
       "Most journaling apps offer no feedback loop, and the ones that do are either a bare mood emoji or built for therapists rather than the person actually writing.",
     solution:
@@ -507,7 +638,9 @@ export const projects = [
     name: 'FocusWin',
     oneLiner:
       'A task manager with a 10-level priority scale, honest analytics, and real-time collaborative team Spaces on Firebase.',
-    link: 'https://github.com/pavithra2870/FocusWin-Firebase',
+    links: { 
+      live: 'https://focuswin-frontend.onrender.com',
+      github: 'https://github.com/pavithra2870/FocusWin-Firebase' },
     problem:
       'Most task managers are either too simple to show meaningful patterns or too heavyweight for everyday personal and small-team use, and personal and team task tools rarely share a data model.',
     solution:
@@ -530,7 +663,7 @@ export const projects = [
     name: 'PulseOps',
     oneLiner:
       'AI-assisted cluster observability and root-cause analysis platform for Linux node fleets with complete detect → alert → incident → diagnose loop.',
-    link: 'https://github.com/pavithra2870/PulseOps',
+    links: { github: 'https://github.com/pavithra2870/PulseOps' },
 
     problem:
       'Infrastructure teams need to monitor node fleets, detect issues before they become outages, and diagnose incidents quickly. Existing tools (Prometheus, Grafana, Datadog) are powerful but complex — PulseOps demonstrates understanding of the fundamentals they implement.',

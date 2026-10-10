@@ -8,6 +8,7 @@ import './Projects.css'
 
 export default function Projects() {
   const [active, setActive] = useState(null)
+  const { github, live, demo } = active?.links ?? {}
 
   return (
     <section id="projects" className="projects section">
@@ -70,11 +71,23 @@ export default function Projects() {
             </ul>
           </div>
 
-          {active.link && (
-            <a className="btn btn--primary project-detail__cta" href={active.link} target="_blank" rel="noreferrer">
-              view repository &#8599;
-            </a>
-          )}
+          <div className="project-detail__links">
+            {github && (
+              <a className="btn btn--primary" href={github} target="_blank" rel="noreferrer">
+                view repository &#8599;
+              </a>
+            )}
+            {live && (
+              <a className="btn btn--ghost" href={live} target="_blank" rel="noreferrer">
+                live site &#8599;
+              </a>
+            )}
+            {demo && (
+              <a className="btn btn--ghost" href={demo} target="_blank" rel="noreferrer">
+                watch demo &#8599;
+              </a>
+            )}
+          </div>
         </Modal>
       )}
     </section>

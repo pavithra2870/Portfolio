@@ -84,7 +84,17 @@
 .hero-graphic.is-visible .hg-node {
   opacity: 1;
   transform: scale(1);
-  animation: hgBreathe 5s var(--ease-premium) infinite;
+}
+
+/* ---- cursor depth: far layers drift most, the spine stays put ---- */
+
+.hero-graphic__branches,
+.hero-graphic__satellites {
+  transform: translate(calc(var(--px, 0) * -9px), calc(var(--py, 0) * -7px));
+}
+
+.hero-graphic__nodes {
+  transform: translate(calc(var(--px, 0) * 3px), calc(var(--py, 0) * 2px));
 }
 
 .hg-node circle {
@@ -109,11 +119,6 @@
   stroke: var(--color-accent);
   stroke-width: 1.5;
   fill: var(--color-accent-soft);
-}
-
-@keyframes hgBreathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.045); }
 }
 
 /* ---- labels ---- */

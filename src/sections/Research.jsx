@@ -13,7 +13,7 @@ export default function Research() {
     <section id="research" className="research section section--subtle">
       <div className="container">
         <SectionHeading
-          index="05"
+          index="06"
           eyebrow="Research"
           title="Ongoing research"
         />

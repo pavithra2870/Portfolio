@@ -10,7 +10,7 @@ export default function Contact() {
       <div className="container container--narrow">
         <SectionHeading
           align="center"
-          index="07"
+          index="08"
           eyebrow="Contact"
           title="connect with me."
         />

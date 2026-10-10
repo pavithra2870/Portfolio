@@ -9,6 +9,7 @@ const LINKS = [
   { href: '#experience', label: 'experience' },
   { href: '#apprenticeships', label: 'apprenticeships' },
   { href: '#projects', label: 'projects' },
+  { href: '#case-studies', label: 'case studies' },
   { href: '#research', label: 'research' },
   { href: '#skills', label: 'skills' },
   { href: '#contact', label: 'contact' },

@@ -2,7 +2,7 @@
   position: relative;
   padding-top: clamp(7.5rem, 6rem + 6vw, 11rem);
   padding-bottom: var(--space-xl);
-  background: linear-gradient(180deg, var(--color-bg-subtle) 0%, var(--color-bg) 62%);
+  background: var(--color-bg);
   overflow: hidden;
 }
 
@@ -15,12 +15,6 @@
   mask-image: radial-gradient(ellipse 70% 55% at 50% 0%, #000 0%, transparent 75%);
   opacity: 0.5;
   pointer-events: none;
-  animation: fieldDrift 44s linear infinite;
-}
-
-@keyframes fieldDrift {
-  from { background-position: 0 0; }
-  to { background-position: 260px 130px; }
 }
 
 .hero__stage {
@@ -52,32 +46,27 @@
   }
 }
 
+/* Sequence: eyebrow -> headline words -> graph -> subtitle -> actions -> stats -> proof */
 .hero__eyebrow,
-.hero__title,
 .hero__subtitle,
 .hero__actions,
 .hero__stats,
 .hero__visual,
 .hero__proof {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(18px);
   transition: opacity var(--duration-slow) var(--ease-premium),
               transform var(--duration-slow) var(--ease-premium);
 }
 
 .is-mounted .hero__eyebrow { transition-delay: 40ms; }
-.is-mounted .hero__title {
-  transition-delay: 140ms;
-  clip-path: inset(0 0 0% 0);
-}
-.is-mounted .hero__subtitle { transition-delay: 260ms; }
-.is-mounted .hero__actions { transition-delay: 380ms; }
-.is-mounted .hero__stats { transition-delay: 480ms; }
-.is-mounted .hero__visual { transition-delay: 220ms; }
-.is-mounted .hero__proof { transition-delay: 620ms; }
+.is-mounted .hero__visual { transition-delay: 300ms; }
+.is-mounted .hero__subtitle { transition-delay: 560ms; }
+.is-mounted .hero__actions { transition-delay: 680ms; }
+.is-mounted .hero__stats { transition-delay: 800ms; }
+.is-mounted .hero__proof { transition-delay: 920ms; }
 
 .is-mounted .hero__eyebrow,
-.is-mounted .hero__title,
 .is-mounted .hero__subtitle,
 .is-mounted .hero__actions,
 .is-mounted .hero__stats,
@@ -112,26 +101,31 @@
   margin-bottom: var(--space-sm);
 }
 
-.hero__caret {
-  display: inline-block;
-  margin-left: 2px;
-  animation: caretBlink 1.1s steps(1) infinite;
-}
-
-@keyframes caretBlink {
-  0%, 45% { opacity: 1; }
-  50%, 95% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
 .hero__title {
   font-size: var(--fs-3xl);
   max-width: 22ch;
   margin-bottom: var(--space-sm);
-  clip-path: inset(0 0 100% 0);
-  transition: opacity var(--duration-slow) var(--ease-premium),
-              transform var(--duration-slow) var(--ease-premium),
-              clip-path 1.05s var(--ease-premium);
+}
+
+/* Each word slides up out of its own mask. */
+.hero__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  /* room for descenders/italic overhang so the mask doesn't clip glyphs */
+  padding: 0.04em 0.08em 0.14em;
+  margin: -0.04em -0.08em -0.14em;
+}
+
+.hero__word-inner {
+  display: inline-block;
+  transform: translateY(115%);
+  transition: transform 1000ms var(--ease-premium);
+  transition-delay: calc(140ms + var(--i, 0) * 85ms);
+}
+
+.is-mounted .hero__word-inner {
+  transform: translateY(0);
 }
 
 .hero__title em {
@@ -180,29 +174,6 @@
   margin-bottom: 0.3rem;
 }
 
-.hero__live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  position: relative;
-  flex-shrink: 0;
-}
-
-.hero__live-dot::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid var(--color-accent);
-  animation: pulseRing 2.2s var(--ease-premium) infinite;
-}
-
-@keyframes pulseRing {
-  0% { transform: scale(0.6); opacity: 0.9; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
 .hero__stats dd {
   margin: 0;
   font-size: var(--fs-base);
@@ -224,8 +195,7 @@
   padding: var(--space-xs);
   margin: calc(-1 * var(--space-xs));
   border-radius: var(--radius-sm);
-  transition: transform 420ms var(--ease-premium), background var(--duration-fast) var(--ease-premium);
-  will-change: transform;
+  transition: background var(--duration-fast) var(--ease-premium);
   width: max-content;
 }
 
@@ -255,12 +225,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero__caret,
-  .hero__live-dot::after,
-  .hero__field {
-    animation: none;
-  }
-  .hero__title {
-    clip-path: none;
+  .hero__word-inner {
+    transform: none;
+    transition: none;
   }
 }

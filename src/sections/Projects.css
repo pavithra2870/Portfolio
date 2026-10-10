@@ -109,3 +109,9 @@
 .project-detail__cta {
   margin-top: var(--space-xs);
 }
+
+.project-detail__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}

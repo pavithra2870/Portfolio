@@ -8,6 +8,7 @@ import Timeline from './sections/Timeline'
 import Experience from './sections/Experience'
 import Apprenticeship from './sections/Apprenticeship'
 import Projects from './sections/Projects'
+import CaseStudies from './sections/CaseStudies'
 import Research from './sections/Research'
 import Skills from './sections/Skills'
 import Contact from './sections/Contact'
@@ -30,6 +31,8 @@ export default function App() {
         <Apprenticeship />
         <AnimatedDivider />
         <Projects />
+        <AnimatedDivider />
+        <CaseStudies />
         <AnimatedDivider />
         <Research />
         <AnimatedDivider />

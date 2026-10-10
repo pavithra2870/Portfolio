@@ -9,7 +9,7 @@ export default function Skills() {
     <section id="skills" className="skills section">
       <div className="container">
         <SectionHeading
-          index="06"
+          index="07"
           eyebrow="Skills"
           title="skills and tech stack"
         />

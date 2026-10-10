@@ -312,3 +312,4 @@ AI-powered call center compliance platform with multilingual transcription, SOP 
 - frontend/src/components/: Modular React components (AnalyzeForm, ResultDisplay, SearchPanel, HealthStatus)
 - CLAUDE.md: Detailed system instructions and evaluation criteria
 - link: https://github.com/pavithra2870/Call-Center-Compliance
+- hf spaces: https://huggingface.co/spaces/pavithra2870/call-analytics

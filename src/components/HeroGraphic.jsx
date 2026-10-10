@@ -1,4 +1,4 @@
-import { useReveal } from '../hooks/useReveal'
+import { useEffect, useRef } from 'react'
 import './HeroGraphic.css'
 
 // Spine: the core "research becomes product" flow — gets the traveling packets.
@@ -32,11 +32,67 @@ function curveTo(sat) {
   return `M${HUB.x},${HUB.y} Q${midX},${midY} ${sat.x},${sat.y}`
 }
 
-export default function HeroGraphic() {
-  const ref = useReveal({ threshold: 0.25 })
+// Eases --px/--py (-1..1) toward the cursor so layers can drift by depth in CSS.
+function useCursorDepth() {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node) return
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (!fine || calm) return
+
+    const target = { x: 0, y: 0 }
+    const current = { x: 0, y: 0 }
+    let raf = 0
+
+    const tick = () => {
+      current.x += (target.x - current.x) * 0.06
+      current.y += (target.y - current.y) * 0.06
+      node.style.setProperty('--px', current.x.toFixed(4))
+      node.style.setProperty('--py', current.y.toFixed(4))
+      const settled =
+        Math.abs(target.x - current.x) < 0.001 && Math.abs(target.y - current.y) < 0.001
+      raf = settled ? 0 : requestAnimationFrame(tick)
+    }
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(tick)
+    }
+
+    const onMove = (e) => {
+      const r = node.getBoundingClientRect()
+      target.x = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - 0.5) * 2))
+      target.y = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - 0.5) * 2))
+      kick()
+    }
+    const onLeave = () => {
+      target.x = 0
+      target.y = 0
+      kick()
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true })
+    document.documentElement.addEventListener('pointerleave', onLeave)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      document.documentElement.removeEventListener('pointerleave', onLeave)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+
+  return ref
+}
+
+export default function HeroGraphic({ active = false }) {
+  const ref = useCursorDepth()
 
   return (
-    <div className="hero-graphic" ref={ref} aria-hidden="true">
+    <div
+      className={`hero-graphic ${active ? 'is-visible' : ''}`}
+      ref={ref}
+      aria-hidden="true"
+    >
       <svg
         className="hero-graphic__svg"
         viewBox="0 0 720 520"

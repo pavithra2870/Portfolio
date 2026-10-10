@@ -4,13 +4,29 @@ import MagneticButton from '../components/MagneticButton'
 import CountUp from '../components/CountUp'
 import HeroGraphic from '../components/HeroGraphic'
 import { useScrollDepth } from '../hooks/useScrollDepth'
-import { useTilt } from '../hooks/useTilt'
 import './Hero.css'
 
-function ProofItem({ to, suffix, label }) {
-  const tiltRef = useTilt(6)
+// Headline is revealed word by word from a mask; each word's delay is set via --i.
+const TITLE_WORDS = [
+  { text: 'hi' },
+  { text: 'I', em: true },
+  { text: 'am', em: true },
+  { text: 'Pavithra', em: true },
+]
+
+function TitleWord({ text, index }) {
   return (
-    <div className="hero__proof-item" ref={tiltRef}>
+    <span className="hero__word">
+      <span className="hero__word-inner" style={{ '--i': index }}>
+        {text}
+      </span>
+    </span>
+  )
+}
+
+function ProofItem({ to, suffix, label }) {
+  return (
+    <div className="hero__proof-item">
       <p className="hero__proof-number">
         <CountUp to={to} suffix={suffix} />
       </p>
@@ -21,11 +37,17 @@ function ProofItem({ to, suffix, label }) {
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false)
+  const [graphActive, setGraphActive] = useState(false)
   const depthRef = useScrollDepth(680)
 
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 60)
-    return () => clearTimeout(t)
+    const t1 = setTimeout(() => setMounted(true), 60)
+    // The graph starts drawing once the headline has landed.
+    const t2 = setTimeout(() => setGraphActive(true), 650)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
   }, [])
 
   return (
@@ -37,11 +59,19 @@ export default function Hero() {
             <div className="hero__copy">
               <p className="hero__eyebrow">
                 <span className="text-acronym">AI</span> engineer &amp; product builder
-                <span className="hero__caret">_</span>
               </p>
               <h1 className="hero__title">
-                hi
-                <em> I am Pavithra</em>
+                {TITLE_WORDS.map((w, i) => (
+                  <span key={w.text}>
+                    {w.em ? (
+                      <em>
+                        <TitleWord text={w.text} index={i} />
+                      </em>
+                    ) : (
+                      <TitleWord text={w.text} index={i} />
+                    )}{' '}
+                  </span>
+                ))}
               </h1>
               <p className="hero__subtitle">
                 B.Tech Computer Science (AI &amp; ML) student at VIT Chennai.
@@ -66,13 +96,6 @@ export default function Hero() {
                   <dd>{profile.location}</dd>
                 </div>
               </dl>
-              <div>
-                  <dt>
-                    <span className="hero__live-dot" aria-hidden="true" />
-                   {/* currently*/}
-                  </dt>
-                  <dd>{/*Morph Systems*/}</dd>
-                </div>
               <div className="hero__proof">
                 <ProofItem to={10} suffix="+" label="Projects" />
                 <ProofItem to={800} suffix="+" label="DSA problems" />
@@ -80,7 +103,7 @@ export default function Hero() {
             </div>
 
             <div className="hero__visual">
-              <HeroGraphic />
+              <HeroGraphic active={graphActive} />
             </div>
           </div>
         </div>

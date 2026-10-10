@@ -37,33 +37,7 @@
   box-shadow: 0 12px 28px -18px rgba(28, 28, 30, 0.25);
 }
 
-.project-card__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: var(--space-sm);
-}
-
-.project-card__complexity {
-  font-family: var(--font-mono);
-  font-size: var(--fs-2xs);
-  text-transform: lowercase;
-  letter-spacing: 0.08em;
-  color: var(--color-accent);
-}
-
-.project-card__arrow {
-  color: var(--color-ink-faint);
-  transition: transform var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium);
-}
-
-.project-card:hover .project-card__arrow {
-  transform: translate(3px, -3px);
-  color: var(--color-accent);
-}
-
-.project-card__name {
+.project-card:hover .project-card__name {
   position: relative;
   display: inline-block;
   font-size: var(--fs-md);
@@ -122,3 +96,49 @@
 .project-card:hover .project-card__tags li:nth-child(2) { transition-delay: 50ms; transform: translateY(-1px); }
 .project-card:hover .project-card__tags li:nth-child(3) { transition-delay: 80ms; transform: translateY(-1px); }
 .project-card:hover .project-card__tags li:nth-child(4) { transition-delay: 110ms; transform: translateY(-1px); }
+
+.project-card__tags {
+  margin-bottom: var(--space-sm);
+}
+
+.project-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-sm);
+  width: 100%;
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--color-border);
+}
+
+.project-card__link {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-transform: lowercase;
+  color: var(--color-ink-soft);
+  transition: color var(--duration-fast) var(--ease-premium);
+}
+
+.project-card__expand {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-accent-ink);
+}
+
+.project-card__link span {
+  display: inline-block;
+  transition: transform var(--duration-fast) var(--ease-premium);
+}
+
+.project-card__link:hover {
+  color: var(--color-accent);
+}
+
+.project-card__link:hover span {
+  transform: translate(2px, -2px);
+}
+
+.project-card__expand:hover span {
+  transform: rotate(90deg);
+}
