@@ -41,5 +41,7 @@ Desktop.ini
 .cache/
 .parcel-cache/
 .eslintcache
-
-resume/
+experience/
+.gitignore
+github.md
+claude.md
