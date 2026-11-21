@@ -8,15 +8,15 @@ export const projects = [
     problem:
       'Analysts need answers and signals from documents, but cloud tools raise privacy concerns for sensitive files and generic chatbots answer with no evidence and no measured accuracy.',
     solution:
-      'Four document-focused modules share one hybrid retrieval pipeline: knowledge RAG with numbered citations that refuses, without calling the model, when the best rerank score is too low; a knowledge graph of evidence-backed triples; due-diligence analysis of annual reports where every figure must carry a quote checked against the filing; and a GDPR Article 13 and CCPA compliance checker that quotes the passage proving each item. It began as a refactor of a twelve-module project: the modules that could not be measured were cut, and an evaluation harness and test suite were built around the rest.',
+      'Four document-focused modules share one hybrid retrieval pipeline: knowledge RAG with numbered citations that refuses, without calling the model, when the best rerank score is too low; a knowledge graph of evidence-backed triples; due-diligence analysis of annual reports where every figure must carry a quote checked against the filing; and a GDPR Article 13 and CCPA compliance checker that quotes the passage proving each item. It began as a refactor of a twelve-module project: the modules that could not be measured were cut, and an evaluation harness was built around the rest.',
     architecture:
-      'FastAPI backend (31 API paths, Pydantic v2 schemas, models warmed at startup) with a single retrieval path used everywhere: sentence-aware chunks, FAISS dense search and BM25 fused with reciprocal rank fusion, then a cross-encoder rerank. A MiniLM encoder, an MS MARCO cross-encoder, a DeBERTa-v3-small NLI model and spaCy run locally on CPU; generation uses Ollama (gemma3:4b) or an optional hosted model chosen per feature in configuration. The language model proposes and code decides: quotes are verified against the source, and summaries, verdicts and statuses are built by rules. The React + Vite front end has six pages, including an evaluation page that shows and runs the benchmarks.',
+      'FastAPI backend (Pydantic v2 schemas, models warmed at startup) with a single retrieval path used everywhere: sentence-aware chunks, FAISS dense search and BM25 fused with reciprocal rank fusion, then a cross-encoder rerank. A MiniLM encoder, an MS MARCO cross-encoder, a DeBERTa-v3-small NLI model and spaCy run locally on CPU; generation uses Ollama (gemma3:4b) or an optional hosted model chosen per feature in configuration. The language model proposes and code decides: quotes are verified against the source, and summaries, verdicts and statuses are built by rules. The React + Vite front end includes an evaluation page that shows and runs the benchmarks.',
     contributions: [
       'Built one hybrid retrieval pipeline and ablated every stage on SQuAD v2 and GDPR questions: recall@5 0.98 and MRR 0.937 on SQuAD v2, with the reranker, not fusion, driving the gain.',
       'Added an abstention gate that refuses out-of-corpus questions without calling the model (AUROC 0.996).',
       'Rebuilt the compliance checker after a first NLI version found none of its flagged violations real on real policies: quoted, double-checked disclosures reach precision 0.99 and recall 0.91 on four policies it had not seen.',
       'Rebuilt due-diligence analysis around claim verification: 20 of 20 key figures correct on four real annual reports, up from 1 of 15.',
-      'Built an evaluation harness with nine suites and 346 automated tests that run without model downloads, plus the six-page React front end.',
+      'Built the evaluation harness behind these numbers, plus the React front end.',
     ],
     tech: ['Python', 'FastAPI', 'Pydantic', 'React', 'Vite', 'Recharts', 'FAISS', 'BM25', 'Sentence-Transformers', 'Cross-encoder reranking', 'DeBERTa-v3 (NLI)', 'spaCy', 'NetworkX', 'PyTorch', 'Ollama (gemma3)', 'pytest'],
     tags: ['RAG', 'Hybrid Retrieval', 'Evaluation', 'Claim Verification', 'Knowledge Graph', 'Compliance', 'Local LLM', 'Explainable AI'],
@@ -90,11 +90,11 @@ export const projects = [
     architecture:
       'A Gymnasium environment with an 85-number state and 16 actions, and an action mask applied both when acting and in the learning targets. MiniLM embeddings route messages to goals; an optional local LLM (phi4-mini) is cross-checked and every reply is fact-checked, with templates as fallback. Q-learning, SARSA, DQN, PPO and CQL in PyTorch. FastAPI backend streaming per-step events over SSE, SQLite run tracking and a React dashboard.',
     contributions: [
-      'Designed the evaluation: an independent database-state evaluator, an oracle for regret, seven test sets (held-out goal combinations, tool failures, unseen wording) and ablations.',
+      'Designed the evaluation: an independent database-state evaluator, an oracle for regret, held-out test sets (unseen goal combinations, tool failures, unseen wording) and ablations.',
       'The evaluation exposed PPO collapsing on unseen goal combinations (66.6% against 99.6% for DQN), a gap the overall score hid.',
       'Showed the guardrail matters: without it DQN falls from 98.5% to 21.1% success.',
       'Extended the task with returns, damage claims and policy lookup, retrained every agent once and froze the old results.',
-      'Built the full stack with 216 automated tests.',
+      'Built the full stack: environment, agents, API and dashboard.',
     ],
     tech: ['Python', 'PyTorch', 'Gymnasium', 'FastAPI', 'React', 'Vite', 'SQLite', 'Sentence-Transformers', 'Ollama (phi4-mini)', 'pytest', 'Playwright'],
     tags: ['Reinforcement Learning', 'Evaluation', 'Safety', 'Offline RL', 'Agents', 'Full-Stack'],
@@ -149,7 +149,7 @@ export const projects = [
     'Implemented quantitative risk calculations including volatility, beta, covariance, bond duration and convexity, Black-Scholes Greeks, DV01, CS01, stress-severity curves, and break-even analysis.',
     'Built a resilient background refresh system with atomic database swaps, cache invalidation, source-level failure handling, and offline snapshot fallbacks.',
     'Integrated an optional local Ollama copilot that explains backend-computed facts without performing financial calculations, with deterministic template fallback.',
-    'Created reproducible data-processing workflows, project documentation, and automated pytest coverage for the engine, API, and calculations.'
+    'Created reproducible data-processing workflows and project documentation.'
   ],
 
   tech: [
@@ -358,7 +358,7 @@ export const projects = [
     problem:
       'Most air quality tools tell you pollution is bad after it\'s already bad. They lack predictive capabilities, actionable insights, and the ability to explain why air quality is deteriorating or what to do about it. City administrators operate without a unified system to forecast pollution, understand its sources, evaluate intervention strategies, or communicate effectively with citizens.',
     solution:
-      'Seven modules over 9 REST endpoints: a live city dashboard, a forecast engine, pollution attribution, an intervention planner, a scenario simulator and two RAG copilots, plus a one-click PDF brief for commissioners. The forecaster is 16 direct XGBoost models (+3h to +72h) that predict the log-change from the current AQI, which made it robust to a roughly 4x seasonal level shift. It beats a persistence baseline by about 30% on MAE at +1h and +6h and has lower RMSE at every horizon through 72h, but only matches it on MAE beyond 24h; the limit is one year of history. Attribution, planner and simulator are rule-based on purpose, because there are no labelled source data to train on.',
+      'A live city dashboard, a forecast engine, pollution attribution, an intervention planner, a scenario simulator and two RAG copilots, plus a one-click PDF brief for commissioners. The forecaster is 16 direct XGBoost models (+3h to +72h) that predict the log-change from the current AQI, which made it robust to a roughly 4x seasonal level shift. It beats a persistence baseline by about 30% on MAE at +1h and +6h and has lower RMSE at every horizon through 72h, but only matches it on MAE beyond 24h; the limit is one year of history. Attribution, planner and simulator are rule-based on purpose, because there are no labelled source data to train on.',
     architecture:
       'FastAPI backend layered api → services → agents → ai/rag, with a React 18 + Vite frontend (Leaflet, Recharts). Live WAQI ingestion and an idempotent OpenWeather backfill feed Supabase (Postgres), and one shared feature module is used for training, serving and evaluation. Forecasts come from direct multi-horizon XGBoost with prediction intervals from held-out residual percentiles. The copilots run MiniLM + FAISS dense search and BM25 fused with reciprocal rank fusion, a cross-encoder rerank, a relevance gate that refuses weak matches, and Gemini restricted to the retrieved passages plus live readings. Every external dependency has a fallback path.',
     contributions: [
@@ -392,7 +392,6 @@ export const projects = [
       'Built a 90-day time-split churn and spend target from 824,364 retail transactions (5,281 customers), keeping features strictly before the cutoff.',
       'Benchmarked every model against three standard baselines with bootstrap confidence ranges, and switched the conversion model from logistic regression to gradient boosting when Bank Marketing scored 0.772 against 0.802.',
       'Implemented the fairness audit (80% adverse-impact rule and parity gap) and the what-if simulator, and built the React dashboard.',
-      'Tested every page across all four datasets (36 combinations) in a headless DOM test.',
     ],
     tech: ['Python', 'FastAPI', 'Pydantic', 'React 18', 'Vite', 'scikit-learn', 'LightGBM', 'SHAP', 'Pandas', 'Ollama (phi4-mini)', 'Recharts'],
     tags: ['Machine Learning', 'Benchmarking', 'Data Leakage', 'Explainability', 'Fairness', 'FastAPI', 'React'],
@@ -643,7 +642,7 @@ export const projects = [
       'Designed the 10-level priority + difficulty tagging system and the nested group hierarchy.',
       'Built the analytics dashboard, including the custom streak algorithm and calendar heatmap.',
       'Designed and built the Team Spaces collaboration feature with real-time Firestore sync and Kanban view.',
-      'Wrote a 20+ test Selenium/pytest suite covering authentication and CRUD flows with failure-screenshot capture.',
+      'Wrote Selenium/pytest end-to-end tests for authentication and CRUD flows.',
     ],
     tech: ['React', 'Firebase Firestore', 'Firebase Auth', 'Firebase Cloud Functions', 'Node.js', 'Express', 'Recharts', 'Selenium', 'pytest'],
     tags: ['Real-time', 'Firebase', 'Collaboration', 'Analytics', 'Testing', 'Full Stack'],
@@ -660,7 +659,7 @@ export const projects = [
     problem:
       'Infrastructure teams need to monitor node fleets, detect issues before they become outages, and diagnose incidents quickly. Existing tools (Prometheus, Grafana, Datadog) are powerful but complex — PulseOps demonstrates understanding of the fundamentals they implement.',
     solution:
-      'A full-stack observability platform with 32 REST endpoints, WebSocket real-time updates, and Prometheus metrics exposition. The alert engine performs rule-based threshold evaluation with deduplication and warning→critical escalation. Incident management includes full timelines with status transitions. Nine realistic fault injection modes (CPU spike, memory leak, disk full, network outage, etc.) flow through the actual pipeline for chaos engineering. AI diagnosis uses Gemini with structured JSON output and RAG grounding in FAISS-indexed runbooks.',
+      'A full-stack observability platform with WebSocket real-time updates, and Prometheus metrics exposition. The alert engine performs rule-based threshold evaluation with deduplication and warning→critical escalation. Incident management includes full timelines with status transitions. Nine realistic fault injection modes (CPU spike, memory leak, disk full, network outage, etc.) flow through the actual pipeline for chaos engineering. AI diagnosis uses Gemini with structured JSON output and RAG grounding in FAISS-indexed runbooks.',
     architecture:
       'FastAPI backend with SQLAlchemy 2.0 async, Alembic migrations, and WebSocket hub for real-time updates. Node agents use psutil for Prometheus-style metrics exposition. PostgreSQL with proper indexing for time-series queries, Redis caching with TTL-based invalidation. Every external dependency (Supabase PostgreSQL, Upstash Redis, Gemini AI, Grafana Cloud) has a zero-credential fallback (SQLite, in-memory cache, deterministic mock, local metrics) for immediate demo capability.',
     contributions: [
