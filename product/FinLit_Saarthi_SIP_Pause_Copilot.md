@@ -3,8 +3,8 @@ category: Product Management
 date: October 2026
 featured: true
 links:
-  case_study: "https://drive.google.com/file/d/1_PsTzGPLELwZbvfUlifi7e6FnQ0I1y_b/view?usp=drive_link"
-  figma: "https://www.figma.com/design/g82WFy9WqbkX6ansZkCddj/FinLit-Saarthi-%E2%80%94-SIP-Pause-Co-pilot--Prototype-?node-id=0-1&t=0dNeOd0LeeqRlG8k-1"
+  case_study: "https://drive.google.com/file/d/1_PsTzGPLELwZbvfUlifi7e6FnQ0I1y_b/view"
+  figma: "https://www.figma.com/design/g82WFy9WqbkX6ansZkCddj/FinLit-Saarthi-%E2%80%94-SIP-Pause-Co-pilot--Prototype-"
   source_document: FinLit_Saarthi_SIP_Pause_Pavithra.pdf
 role: Product case study
 slug: finlit-saarthi-sip-pause-copilot
@@ -199,6 +199,3 @@ not guaranteed returns or personalised financial advice.
     study](https://drive.google.com/file/d/1_PsTzGPLELwZbvfUlifi7e6FnQ0I1y_b/view?usp=drive_link)
 -   [Open the Figma
     prototype](https://www.figma.com/design/g82WFy9WqbkX6ansZkCddj/FinLit-Saarthi-%E2%80%94-SIP-Pause-Co-pilot--Prototype-?node-id=0-1&t=0dNeOd0LeeqRlG8k-1)
-
-> **Publishing note:** Replace the portfolio URL with the final public
-> case-study URL. The Figma URL is taken from the submitted PDF.

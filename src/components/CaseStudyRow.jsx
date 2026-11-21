@@ -44,6 +44,17 @@ export default function CaseStudyRow({ study, onOpen }) {
             figma <span aria-hidden="true">&#8599;</span>
           </a>
         )}
+        {links.prototype && (
+          <a
+            className="case-card__link"
+            href={links.prototype}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Try the ${study.name} prototype (opens in a new tab)`}
+          >
+            prototype <span aria-hidden="true">&#8599;</span>
+          </a>
+        )}
       </div>
     </article>
   )

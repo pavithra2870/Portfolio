@@ -3,8 +3,8 @@ category: Product Strategy
 date: September 2026
 featured: true
 links:
-  case_study: "https://drive.google.com/file/d/1jieV9Y02boAbs6j_aPC3q9glhtFSDHqH/view?usp=drive_link"
-  source_document: PaytmPakka_ExecSummary.pdf
+  case_study: "https://drive.google.com/file/d/1jieV9Y02boAbs6j_aPC3q9glhtFSDHqH/view"
+  figma : "https://www.figma.com/design/9EcdVS76PkiuD9e9ydddkh/Paytm-Pakka"
 role: Team case study --- Team Paytm Karo
 slug: paytm-pakka-upi-growth
 status: concept
@@ -198,4 +198,7 @@ design link is included.
 
 -   [Read the case
     study](https://drive.google.com/file/d/1jieV9Y02boAbs6j_aPC3q9glhtFSDHqH/view?usp=drive_link)
+-   [Open the Figma
+    prototype](https://www.figma.com/design/9EcdVS76PkiuD9e9ydddkh/Paytm-Pakka?node-id=0-1&t=wKcr4oxchiuVVJ2G-1)
+
 

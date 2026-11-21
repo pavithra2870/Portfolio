@@ -48,13 +48,13 @@ export const experience = [
     role: null,
     current: false,
     summary:
-      'Worked across search infrastructure, network analytics, and support automation — four distinct systems spanning retrieval, forecasting, and agent orchestration.',
+      'Worked across RAG-based search infrastructure and support automation — systems spanning retrieval and agent orchestration.',
     highlights: [
       'Architected a production RAG search bot for complex internal documents, adding semantic caching via HNSW to reduce inference costs and latency.',
       'Designed a Retrieval-Augmented Generation system using vector embeddings and vector database for semantic search across technical documentation.',
       'Implemented chunking strategies and retrieval optimization to improve answer quality for complex technical queries.',
     ],
-    tech: ['Python', 'HNSW', 'n8n', 'OpenAI embeddings', 'Pinecone'],
+    tech: ['Python', 'HNSW', 'n8n', 'embeddings', 'Vector databases','RAG'],
   },
   {
     id: 'soul-of-arts',
@@ -63,16 +63,14 @@ export const experience = [
     current: false,
     link: { label: 'soulofarts.in', href: 'https://soulofarts.in' },
     summary:
-      'An art studio with no prior digital presence. I owned the entire process of turning it into a credible, discoverable, conversion-ready brand - design, engineering, SEO, and launch - as the sole contributor.',
+      'An art studio with no digital presence. Sole contributor: design, engineering, SEO and launch.',
     highlights: [
-      'Designed and built the full site as a single-page application in HTML, CSS, and vanilla JavaScript — glassmorphism nav, staggered hero grid, masonry gallery with lightbox, and scroll-triggered reveals via the Intersection Observer API — with no frameworks or build tools.',
-      'Implemented complete on-page SEO: keyword-targeted meta, canonical tags, Open Graph and Twitter Card markup, and Schema.org LocalBusiness structured data for rich search results.',
-      'Created and optimized the Google Business Profile, connecting the studio to Google Search and Maps for the first time.',
-      'Integrated a zero-backend enrollment form (FormSubmit.co) with custom AJAX handling and real-time submission-state feedback, plus a floating WhatsApp deep link for low-friction inquiries.',
-      'Deployed to GitHub Pages on a custom GoDaddy domain with full DNS configuration.',
+      'Built a responsive single-page site in HTML, CSS and JavaScript, deployed to GitHub Pages on a custom domain.',
+      'Set up on-page SEO (meta tags, Open Graph, Schema.org LocalBusiness) and a Google Business Profile, putting the studio on Search and Maps.',
+      'Added a zero-backend enrollment form and a WhatsApp link for inquiries.',
     ],
     outcome:
-      'The studio launched with a professional web presence, appeared on Google Search and Maps from day one, and enrolled roughly 10 students within its first five days.',
+      'Live on Search and Maps from day one; about 10 students enrolled in the first five days.',
     tech: ['HTML5', 'CSS3', 'Vanilla JavaScript', 'GitHub Pages', 'GoDaddy DNS', 'FormSubmit.co'],
   },
 ]

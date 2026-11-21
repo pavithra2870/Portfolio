@@ -71,6 +71,16 @@ export default function CaseStudies() {
                 open in figma &#8599;
               </a>
             )}
+            {active.links.prototype && (
+              <a
+                className="btn btn--ghost"
+                href={active.links.prototype}
+                target="_blank"
+                rel="noreferrer"
+              >
+                try the prototype &#8599;
+              </a>
+            )}
           </div>
         </Modal>
       )}

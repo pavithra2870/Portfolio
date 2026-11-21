@@ -6,7 +6,6 @@ export const about = {
 "love working at the intersection of technology, product and business",
 "i love pair programming with ai (claude code is my holygrail)",
 "i am quick and curious.",
-"i can build and also market."
   ],
   dsa: '800+ problems solved across LeetCode, GeeksforGeeks, and CodeChef.',
   interests: [

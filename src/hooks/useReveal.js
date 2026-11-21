@@ -12,6 +12,13 @@ export function useReveal(options = {}) {
       return
     }
 
+    // A fixed share of a very tall element (e.g. a one-column card grid on mobile)
+    // can be taller than the screen and would never count as visible, so cap the
+    // threshold at what a viewport can actually show.
+    const base = options.threshold ?? 0.15
+    const height = node.offsetHeight
+    const threshold = height > 0 ? Math.min(base, (window.innerHeight * 0.8) / height) : base
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -21,7 +28,7 @@ export function useReveal(options = {}) {
           }
         })
       },
-      { threshold: 0.15, rootMargin: '0px 0px -60px 0px', ...options }
+      { rootMargin: '0px 0px -60px 0px', ...options, threshold }
     )
 
     observer.observe(node)

@@ -1,27 +1,105 @@
 export const projects = [
   {
     id: 'nexus',
-    name: 'Consultancy AI - Market Intelligence Platform',
+    name: 'NEXUS - Document Intelligence',
     oneLiner:
-      'A local-first AI consultancy platform — 8 research agents and 4 enterprise modules combining classical NLP, deep learning, and a local LLM.',
+      'A local-first document intelligence platform that answers from your own documents with numbered citations, refuses when the evidence is missing, and checks every claim against its source.',
     links: { github: 'https://github.com/pavithra2870/Consultancy-AI' },
- 
     problem:
-      'Manual market research and document analysis are slow and inconsistent, and most AI alternatives either lack analytical depth or require sending sensitive documents to the cloud.',
+      'Analysts need answers and signals from documents, but cloud tools raise privacy concerns for sensitive files and generic chatbots answer with no evidence and no measured accuracy.',
     solution:
-      'Consultancy AI runs entirely locally: a multi-model NLP ensemble (spaCy + FLAIR NER, DeBERTa sentiment, sentence-transformer embeddings) handles precise extraction, and a local Ollama LLM (Llama 3) synthesizes the results into consultancy-style reports. Eight specialized agents — market research, document comparison, knowledge graphs, review analysis, trend spotting, brand association, persona generation, and compliance checking — sit alongside four enterprise modules for RAG-based knowledge Q&A, M&A due diligence, report generation, and live risk monitoring.',
+      'Four document-focused modules share one hybrid retrieval pipeline: knowledge RAG with numbered citations that refuses, without calling the model, when the best rerank score is too low; a knowledge graph of evidence-backed triples; due-diligence analysis of annual reports where every figure must carry a quote checked against the filing; and a GDPR Article 13 and CCPA compliance checker that quotes the passage proving each item. It began as a refactor of a twelve-module project: the modules that could not be measured were cut, and an evaluation harness and test suite were built around the rest.',
     architecture:
-      'FastAPI backend with model singletons pre-loaded at startup to avoid cold-start latency; a shared NLP engine layer combining classical techniques (TF-IDF, LDA, dependency parsing) with deep learning inference; hybrid FAISS + BM25 retrieval with reciprocal rank fusion for the RAG engine; and a React + Vite frontend with force-directed graph visualization and client-side PDF export.',
+      'FastAPI backend (31 API paths, Pydantic v2 schemas, models warmed at startup) with a single retrieval path used everywhere: sentence-aware chunks, FAISS dense search and BM25 fused with reciprocal rank fusion, then a cross-encoder rerank. A MiniLM encoder, an MS MARCO cross-encoder, a DeBERTa-v3-small NLI model and spaCy run locally on CPU; generation uses Ollama (gemma3:4b) or an optional hosted model chosen per feature in configuration. The language model proposes and code decides: quotes are verified against the source, and summaries, verdicts and statuses are built by rules. The React + Vite front end has six pages, including an evaluation page that shows and runs the benchmarks.',
     contributions: [
-      'Designed and built all 12 agent/module pipelines and the shared NLP computation layer.',
-      'Implemented the hybrid dense + sparse retrieval system for the knowledge RAG engine.',
-      'Built the PDF ingestion cascade (PyMuPDF → pdfplumber → OCR) for the due diligence agent.',
-      'Built the full React frontend, including the knowledge-graph and positioning-map visualizations.',
+      'Built one hybrid retrieval pipeline and ablated every stage on SQuAD v2 and GDPR questions: recall@5 0.98 and MRR 0.937 on SQuAD v2, with the reranker, not fusion, driving the gain.',
+      'Added an abstention gate that refuses out-of-corpus questions without calling the model (AUROC 0.996).',
+      'Rebuilt the compliance checker after a first NLI version found none of its flagged violations real on real policies: quoted, double-checked disclosures reach precision 0.99 and recall 0.91 on four policies it had not seen.',
+      'Rebuilt due-diligence analysis around claim verification: 20 of 20 key figures correct on four real annual reports, up from 1 of 15.',
+      'Built an evaluation harness with nine suites and 346 automated tests that run without model downloads, plus the six-page React front end.',
     ],
-    tech: ['Python', 'FastAPI', 'React', 'Ollama (Llama 3)', 'spaCy', 'FLAIR', 'DeBERTa-v3', 'sentence-transformers', 'FAISS', 'BM25', 'Gensim LDA', 'NetworkX', 'Playwright'],
-    tags: ['NLP', 'RAG', 'Local LLM', 'Multi-Agent', 'React', 'FastAPI', 'Privacy-First'],
+    tech: ['Python', 'FastAPI', 'Pydantic', 'React', 'Vite', 'Recharts', 'FAISS', 'BM25', 'Sentence-Transformers', 'Cross-encoder reranking', 'DeBERTa-v3 (NLI)', 'spaCy', 'NetworkX', 'PyTorch', 'Ollama (gemma3)', 'pytest'],
+    tags: ['RAG', 'Hybrid Retrieval', 'Evaluation', 'Claim Verification', 'Knowledge Graph', 'Compliance', 'Local LLM', 'Explainable AI'],
     challenge:
-      'Keeping 12 distinct analytical workflows fast and reliable on local hardware meant pre-loading every model at startup and hand-tuning batch sizes to avoid out-of-memory failures during deep-learning inference.',
+      'Most of the work was finding where a good-looking number was wrong. A spaCy configuration silently broke every NLP step, a due-diligence pipeline read about 4% of each filing and invented the rest, and a compliance checker that scored well on short snippets found none of its flagged violations real on real policies. Each was found by testing on real documents instead of demo text, and the fix was the same idea each time: make the model quote its evidence and have code check the quote.',
+  },
+  {
+    id: 'geo-bias-analyzer',
+    name: 'GEO Bias Analyzer',
+    oneLiner:
+      'An audit of which brands AI models recommend: 14 models, 15,104 answers and 70,552 brand mentions across CRM software, ecommerce platforms and personal finance apps.',
+    links: {
+      github: 'https://github.com/pavithra2870/GEO-Bias-Analyzer',
+      live: 'https://pavithra2870.github.io/GEO-Bias-Analyzer/',
+    },
+    problem:
+      'People now ask chatbots what software to buy, but which brands the models name, whether they favour established companies, and whether they point to products that no longer exist had not been measured.',
+    solution:
+      'Asked 14 language models from 12 labs about 1,080 buying questions each, then matched 70,552 brand mentions into 3,188 brands and checked each against public records. A few brands take most mentions (in CRM the top 10 take 82%), the model you ask explains 18% to 27% of which brand comes first while rewording explains under 0.5%, 8.4% of mentions go to a retired product, and established companies get about 70% of mentions. Fame, age and size did not predict recommendations, and that negative result is reported.',
+    architecture:
+      'A resumable audit pipeline: the full to-do list is planned first, each call has a fixed hash ID, and every answer is saved with its raw text in one transaction, so parsing and matching can be redone without asking again. Three channels ran in parallel (a laptop, Kaggle GPUs and cloud APIs), each into its own database, merged by answer ID. Matching runs in four layers plus an evidence ladder (website check, Wikidata and App Store records, a blind web search, a human decision) that marks each brand real, renamed or retired. Statistics use bootstrap intervals, permutation tests and clustered regression; the ML uses cross-validation grouped by question. Results are published as tables, charts and a results site.',
+    contributions: [
+      'Designed the question grid (648 questions across market, buying stage, persona, country, framing and wording) and a restartable collection pipeline that ran 14 models across a laptop, free GPUs and cloud APIs.',
+      'Matched 70,552 mentions into 3,188 brands and verified each brand’s status with an evidence ladder, scoring the matching on 170 hand-labelled pairs (88.6% of merges and 80.5% of kept-apart look-alikes correct).',
+      'Measured concentration, what drives the first pick, agreement between models, stale knowledge and incumbent share, with bootstrap intervals, permutation tests and clustered regression.',
+      'Trained a model-fingerprint classifier that names the writing model correctly 71% of the time out of 14 (7% by chance), and surrogate models that predict each model’s first pick from the question alone.',
+      'Raised the usable share of one failed import from about two-thirds to 98.7% with a fallback JSON repair and no new compute, and corrected a first staleness figure that was wrong by a factor of ten.',
+    ],
+    tech: ['Python', 'SQL', 'DuckDB', 'pandas', 'NumPy', 'SciPy', 'statsmodels', 'scikit-learn', 'XGBoost', 'NetworkX', 'Ollama', 'Hugging Face Transformers', 'vLLM', 'Wikidata API', 'pytest', 'JavaScript', 'SVG'],
+    tags: ['LLM Research', 'Brand Visibility', 'AI Bias', 'Entity Resolution', 'Statistics', 'Machine Learning', 'Data Engineering'],
+    challenge:
+      'Asking the models was easy; matching was the hard part. Models write one brand many ways, and a live website is weak proof that a product still exists: the first staleness figure was 0.9% because Mint still had a page, and a dated status check gave 8.4%. The work was building matching and verification that could be checked, and reporting what did not work, such as fame failing to predict recommendations.',
+  },
+  {
+    id: 'oauth-guides',
+    name: 'OAuth Guides',
+    oneLiner:
+      'An AI agent that researches any API provider and builds a shareable guide to getting an OAuth app approved: difficulty, time, and who does each step.',
+    links: {
+      github: 'https://github.com/pavithra2870/OAuth-Guides',
+      live: 'https://oauth-guides-o66y.onrender.com/',
+      demo: 'https://vimeo.com/1244693576',
+    },
+    problem:
+      'Registering an OAuth app and passing the provider\'s review can take 30 minutes or a quarter, and nothing says which up front. Developers piece it together from scattered docs and stale forums.',
+    solution:
+      'Search any app: library guides load instantly, otherwise an agent researches the provider\'s docs live, streams its progress and builds the guide in about a minute. Each guide gives a difficulty verdict, a journey strip separating hands-on work, AI-draftable steps and provider wait, and a multi-app comparison that flags the slowest approval.',
+    architecture:
+      'FastAPI pipeline (search, extract, write, verify, compute timing, save) streaming progress over server-sent events, with shared jobs for duplicate requests. The model writes and code verifies: every claim carries a verbatim quote that code matches against the fetched page to set its evidence level. Gemini with a Groq fallback, key rotation and daily caps; Supabase Postgres (SQLite locally); React 19 + Vite with hand-written CSS.',
+    contributions: [
+      'Built the evidence layer: forced verbatim quotes and code-set evidence levels (Documented, Reported, Inferred, Tested), so the model never grades itself.',
+      'Designed the journey strip separating active effort from provider waiting, so the review wait, not the work, sets the date.',
+      'Targeted the bring-your-own long tail after analysing the Composio catalog (127 managed vs 275 bring-your-own apps).',
+      'Built the live research stream, the multi-model fallback for free-tier limits, and a 9-app curated library; deployed publicly.',
+    ],
+    tech: ['Python', 'FastAPI', 'React 19', 'Vite', 'Supabase (Postgres)', 'SQLite', 'Google Gemini', 'Groq', 'Tavily', 'Server-sent events'],
+    tags: ['Agentic AI', 'Grounded Generation', 'Product Design', 'Developer Experience', 'Full-Stack', 'Prompt Engineering'],
+    challenge:
+      'Not trusting the model. Free-tier LLMs were retired mid-build, so the pipeline needed a fallback chain and token-budgeted prompts. Guides are AI-generated from public docs and not yet hand-verified, so the product shows evidence levels instead of overclaiming.',
+  },
+  {
+    id: 'agent-orchestra-rl',
+    name: 'Agent-Orchestra-RL',
+    oneLiner:
+      'A reinforcement-learning customer-support agent that chooses which tool to call at each step, with hard safety rules and an independent evaluator, compared across five RL methods.',
+    links: { live: 'https://pavithra2870.github.io/Agent-Orchestra-RL/' },
+    problem:
+      'At each step a support agent must decide which tool to call, or whether to stop, ask or hand over to a human, balancing success, cost, latency and safety.',
+    solution:
+      'A simulated shop with six goals (delivery, payment change, refund, cancel, return or damage claim, policy question). A language layer turns the message into goals, a learned policy picks every tool call, code makes illegal actions impossible, and an evaluator judges the final database state. DQN reaches 98.5% on 1,410 held-out scenarios with 0.0% rule violations; offline CQL reaches 97.6% from a fixed log with no live training. A hand-written playbook still scores 99.9%, and a small local LLM choosing tools gets 28.3%.',
+    architecture:
+      'A Gymnasium environment with an 85-number state and 16 actions, and an action mask applied both when acting and in the learning targets. MiniLM embeddings route messages to goals; an optional local LLM (phi4-mini) is cross-checked and every reply is fact-checked, with templates as fallback. Q-learning, SARSA, DQN, PPO and CQL in PyTorch. FastAPI backend streaming per-step events over SSE, SQLite run tracking and a React dashboard.',
+    contributions: [
+      'Designed the evaluation: an independent database-state evaluator, an oracle for regret, seven test sets (held-out goal combinations, tool failures, unseen wording) and ablations.',
+      'The evaluation exposed PPO collapsing on unseen goal combinations (66.6% against 99.6% for DQN), a gap the overall score hid.',
+      'Showed the guardrail matters: without it DQN falls from 98.5% to 21.1% success.',
+      'Extended the task with returns, damage claims and policy lookup, retrained every agent once and froze the old results.',
+      'Built the full stack with 216 automated tests.',
+    ],
+    tech: ['Python', 'PyTorch', 'Gymnasium', 'FastAPI', 'React', 'Vite', 'SQLite', 'Sentence-Transformers', 'Ollama (phi4-mini)', 'pytest', 'Playwright'],
+    tags: ['Reinforcement Learning', 'Evaluation', 'Safety', 'Offline RL', 'Agents', 'Full-Stack'],
+    challenge:
+      'Getting a result I could trust. The oracle first failed the environment test, a smoke-test log contaminated an offline run, and a test set I had read stopped being a test. Each was found and fixed, and the write-up states the limits: everything is simulated, and the shop rules are simple enough for a playbook to be near perfect.',
   },
   {
     id: 'civicbot',
@@ -48,7 +126,7 @@ export const projects = [
   },
   {
   id: 'meridian',
-  name: 'Meridian - AI Risk Intelligence & Portfolio Stress Testing',
+  name: 'Meridian - AI Risk Intelligence',
   oneLiner:
     'An offline-first financial risk intelligence platform that transforms global news into explainable risk signals, constrained portfolio rebalancing recommendations, and multi-asset stress-test scenarios.',
 
@@ -71,7 +149,6 @@ export const projects = [
     'Implemented quantitative risk calculations including volatility, beta, covariance, bond duration and convexity, Black-Scholes Greeks, DV01, CS01, stress-severity curves, and break-even analysis.',
     'Built a resilient background refresh system with atomic database swaps, cache invalidation, source-level failure handling, and offline snapshot fallbacks.',
     'Integrated an optional local Ollama copilot that explains backend-computed facts without performing financial calculations, with deterministic template fallback.',
-    'Developed the React frontend, custom SVG visualizations, and editorial financial-dashboard design system while keeping all business logic and financial calculations in the backend.',
     'Created reproducible data-processing workflows, project documentation, and automated pytest coverage for the engine, API, and calculations.'
   ],
 
@@ -185,69 +262,144 @@ export const projects = [
     challenge:
       'Standard English NLP models produce inaccurate results on code-switched speech — the translation layer had to preserve names, numbers, and intent exactly, since a mistranslation would silently corrupt every downstream compliance score.',
   },
- {
-  id: 'geo-bias-analyzer',
-
-  name: 'GEO Bias Analyzer',
-
-  oneLiner:
-    'Research pipeline that audits LLM product recommendations for commercial bias using Share of Model, SHAP, and agentic analysis.',
-
-  links: {
-    github: 'https://github.com/pavithra2870/GEO-Bias-Analyzer',
-    live: 'https://pavithra2870.github.io/GEO-Bias-Analyzer/',
+  {
+    id: 'nurture-ai',
+    name: 'NurtureAI',
+    oneLiner:
+      'A bilingual AI parenting assistant with a deterministic safety layer that guarantees emergency escalation regardless of what the LLM says.',
+    links: { 
+      github: 'https://github.com/pavithra2870/NurtureAI',
+      demo: 'https://www.loom.com/share/7e8c1efae431433b91e66ba7ad727644',
+    },
+    problem:
+      'Generic AI chatbots are unsuitable for medical-adjacent parenting questions because they can understate risk or fail to escalate — and a confident-but-wrong answer at 2 a.m. is worse than no answer at all.',
+    solution:
+      'A layered safety architecture keeps escalation logic outside the LLM entirely: a pre-LLM rule engine matches 30+ critical and 15+ medium-risk patterns before any model runs, a hardcoded emergency bypass skips the LLM completely for critical cases, and a post-LLM safety layer can override the model\'s own risk assessment. Everything else — advice, product suggestions, RAG retrieval — runs through a grounded, bilingual (English/Arabic) pipeline.',
+    architecture:
+      'FastAPI with async pipeline stages run in parallel via asyncio.gather; hybrid intent and risk classification (regex rules authoritative, TF-IDF + Logistic Regression as fallback only); FAISS-backed RAG over separate knowledge and product indexes; AssemblyAI voice input with automatic language detection; local Ollama (llama3.2) for generation and translation, temperature-capped for factual consistency.',
+    contributions: [
+      'Designed and implemented the full pre-LLM / bypass / post-LLM safety architecture.',
+      'Built the hybrid rule-first, ML-fallback intent and risk classifiers.',
+      'Built the bilingual pipeline — Arabic detection, translation, and RTL-aware response delivery.',
+      'Built the RAG retrieval and query-enrichment layer, and the React chat UI with voice input review-before-send.',
+    ],
+    tech: ['Python', 'FastAPI', 'React', 'Ollama (llama3.2)', 'FAISS', 'sentence-transformers', 'scikit-learn', 'AssemblyAI', 'Tailwind CSS'],
+    tags: ['Safety-Critical AI', 'RAG', 'Bilingual', 'Voice AI', 'FastAPI', 'React', 'Machine Learning'],
+    challenge:
+      'The core design problem was asymmetric failure cost: a false negative on an emergency query is catastrophic, so every safety decision had to be made deterministically, with the LLM unable to override or soften it.',
   },
+ 
+{
+  id: 'fact-knowledge-layer',
+  name: 'Fact Knowledge Layer',
+  oneLiner: 'Evidence-first document intelligence system that extracts verifiable facts and distinguishes contradictions from contextual differences across PDFs.',
+  links: { 
+    github: 'https://github.com/pavithra2870/Fact-Knowledge-Layer',
+   demo: 'https://drive.google.com/file/d/16L4CESY34hxRvXIwT1Rzp769igvw5DJu/view?usp=drive_link' },
 
+  problem: 'Comparing facts across reports, filings, and research documents is difficult because different values may reflect legitimate differences in time period, geography, units, or estimate status. Naive document AI systems often flag these as contradictions or provide answers without verifiable evidence.',
 
-  problem:
-    'As product discovery shifts from search engines to AI recommendations, emerging brands may be harder to discover than established brands. Existing SEO metrics do not directly measure how brands appear inside LLM-generated recommendations.',
+  solution: 'A document intelligence pipeline that extracts structured facts with source-level provenance, verifies every citation against the original document, retrieves related facts using hybrid semantic and keyword search, and combines deterministic contextual reasoning with LLM classification to identify corroboration, contradiction, contextual reconciliation, or unrelated facts.',
 
-  solution:
-    'Built a reproducible audit system that queries multiple LLMs across personas, funnel stages, regions, and categories, then combines recommendation data with public web signals to measure and explain brand visibility.',
-
-  architecture:
-    'Configuration-driven Python pipeline orchestrating prompt generation, multi-provider LLM auditing, metadata scraping, feature engineering, surrogate ML modeling, and SHAP analysis, with Reflexion-based bias critique and DiCE counterfactual analysis as agentic extensions.',
+  architecture: 'React frontend with a FastAPI backend orchestrating PDF/OCR ingestion, schema-constrained LLM extraction, evidence verification, FAISS + BM25 hybrid retrieval, Reciprocal Rank Fusion, cross-encoder reranking, contextual reasoning, and relationship classification. SQLite stores structured facts and provenance, while NetworkX and D3.js provide an interactive knowledge graph over the fact relationships.',
 
   contributions: [
-    'Designed the Share of Model (SoM) metric to quantify and compare brand visibility across LLM recommendations.',
-    'Built a multi-provider LLM audit pipeline with structured outputs, rate limiting, checkpointing, and graceful failure handling.',
-    'Engineered a 33+ feature brand metadata pipeline using WHOIS, Wikipedia, Google Trends, DuckDuckGo, and SEO signals.',
-    'Applied Random Forest/XGBoost with SHAP to explain which public-web signals are associated with recommendation visibility.',
-    'Implemented agentic extensions for bias self-critique and counterfactual “what-if” analysis using Reflexion and DiCE.',
-    'Built the research workflow to be configurable and reproducible, with CLI stage selection, experiment controls, and generated visual analyses.'
+    'Built an evidence-first fact extraction pipeline using PyMuPDF, EasyOCR, schema-constrained LLM outputs, and strict citation verification against source documents.',
+    'Designed hybrid fact retrieval combining FAISS semantic search, BM25 keyword matching, Reciprocal Rank Fusion, and cross-encoder reranking.',
+    'Implemented deterministic contextual reasoning for fiscal periods, geographic scope, units, and estimate-versus-actual status before LLM relationship classification.',
+    'Engineered multi-provider LLM routing across Gemini, Groq, and Ollama with per-key quota pools, rate-limit cooldowns, and page-level failover.',
+    'Built incremental document processing with parallel page extraction, persisted extraction failures, automatic index updates, and recovery of interrupted jobs.',
   ],
 
   tech: [
     'Python',
-    'LangChain',
+    'FastAPI',
+    'React',
+    'FAISS',
+    'BM25',
+    'Sentence Transformers',
     'Gemini',
     'Groq',
     'Ollama',
-    'Scikit-learn',
-    'XGBoost',
-    'SHAP',
-    'DiCE',
-    'Pandas',
-    'Pydantic',
-    'Web Scraping',
-    'YAML'
+    'PyMuPDF',
+    'EasyOCR',
+    'NetworkX',
+    'D3.js',
+    'SQLite',
+    'Pydantic'
   ],
 
   tags: [
-    'LLM Research',
-    'GEO',
+    'AI/ML',
+    'RAG',
+    'Document Intelligence',
+    'Hybrid Retrieval',
+    'LLMs',
+    'Knowledge Graph',
+    'NLP',
+    'OCR',
+    'FAISS',
     'Explainable AI',
-    'AI Bias',
-    'Machine Learning',
-    'Agentic AI',
-    'Data Science',
-    'Research Engineering'
+    'Backend Engineering',
+    'Full Stack'
   ],
 
-  challenge:
-    'LLM recommendations are opaque and can vary across models, prompts, personas, and regions. The pipeline therefore had to make recommendation visibility measurable while separating observed LLM behaviour from hypotheses about why that behaviour occurs.'
+  challenge: 'Document comparisons require more than semantic similarity: two different values can both be correct when their fiscal periods, geographic scope, units, or estimate status differ. The system therefore combines deterministic contextual checks with LLM reasoning while enforcing evidence verification so unsupported or fabricated citations never become accepted facts.'
 },
-{
+  {
+    id: 'airmind-ai',
+    name: 'AirMind AI',
+    oneLiner:
+      'An urban air-quality operating system: a multi-horizon AQI forecaster, source attribution, intervention planning and grounded citizen and commissioner copilots, with the evaluation shown inside the product.',
+    links: {
+      github: 'https://github.com/pavithra2870/AirMind-AI',
+      demo: 'https://drive.google.com/file/d/15e0IqJD1AC2Cr126bHu_KaIrITI8jrEm/view?usp=drive_link',
+    },
+    problem:
+      'Most air quality tools tell you pollution is bad after it\'s already bad. They lack predictive capabilities, actionable insights, and the ability to explain why air quality is deteriorating or what to do about it. City administrators operate without a unified system to forecast pollution, understand its sources, evaluate intervention strategies, or communicate effectively with citizens.',
+    solution:
+      'Seven modules over 9 REST endpoints: a live city dashboard, a forecast engine, pollution attribution, an intervention planner, a scenario simulator and two RAG copilots, plus a one-click PDF brief for commissioners. The forecaster is 16 direct XGBoost models (+3h to +72h) that predict the log-change from the current AQI, which made it robust to a roughly 4x seasonal level shift. It beats a persistence baseline by about 30% on MAE at +1h and +6h and has lower RMSE at every horizon through 72h, but only matches it on MAE beyond 24h; the limit is one year of history. Attribution, planner and simulator are rule-based on purpose, because there are no labelled source data to train on.',
+    architecture:
+      'FastAPI backend layered api → services → agents → ai/rag, with a React 18 + Vite frontend (Leaflet, Recharts). Live WAQI ingestion and an idempotent OpenWeather backfill feed Supabase (Postgres), and one shared feature module is used for training, serving and evaluation. Forecasts come from direct multi-horizon XGBoost with prediction intervals from held-out residual percentiles. The copilots run MiniLM + FAISS dense search and BM25 fused with reciprocal rank fusion, a cross-encoder rerank, a relevance gate that refuses weak matches, and Gemini restricted to the retrieved passages plus live readings. Every external dependency has a fallback path.',
+    contributions: [
+      'Built a rolling-origin evaluation harness (4 expanding-window folds, 14 methods, block-bootstrap confidence intervals) that showed the previous recursive forecaster was 25–111% worse than persistence, then replaced it with the direct model (MAE down 43–55%).',
+      'Found and fixed four pipeline bugs: an AQI conversion that returned 500 for fractional PM2.5 (96 corrupted rows), a 1,000-row database cap that truncated training data, a train/serve feature mismatch, and a non-idempotent backfill.',
+      'Built a hybrid RAG pipeline over 6 policy documents (1,048 chunks) that lifted hit@1 from 38% to 62% and refused 88% of out-of-scope questions, against 62% for the cosine gate, on a held-out split.',
+      'Put the evidence inside the product: a model-performance panel on the Forecast screen charts the model against baselines with confidence intervals, generated by the evaluation scripts.',
+      'Built the attribution, intervention planner (diminishing-returns aggregation) and scenario simulator modules, the React and Leaflet frontend, and the PDF export.',
+      'Designed a fallback for every external dependency so the product runs with zero API keys.',
+    ],
+    tech: ['React 18', 'Vite', 'FastAPI', 'XGBoost', 'scikit-learn', 'Sentence-Transformers (MiniLM)', 'FAISS', 'BM25', 'Cross-encoder reranking', 'Google Gemini', 'Supabase (Postgres)', 'Leaflet', 'Recharts', 'WAQI API', 'OpenWeather API', 'ReportLab'],
+    tags: ['Forecasting', 'RAG', 'Evaluation', 'Geospatial', 'Smart City', 'Full-Stack', 'Machine Learning'],
+    challenge:
+      'The first evaluation showed the original model losing to a one-line baseline. Tracing that led to four data and pipeline bugs, not to the architecture. Beyond 24 hours the rebuilt model still only matches persistence on MAE, because a single year of history gives one example of each season, and the product says so instead of hiding it.',
+  },
+   {
+    id: 'consumer-intelligence',
+    name: 'Consumer Intelligence Platform',
+    oneLiner:
+      'An end-to-end consumer analytics platform: segmentation, churn, conversion and lifetime-value models, SHAP explanations and a fairness audit, benchmarked on four datasets.',
+    links: { github: 'https://github.com/pavithra2870/Consumer-Segmentation' },
+    problem:
+      'Understanding customer segments, predicting churn, and estimating lifetime value usually requires a dedicated data science team — putting real analytics out of reach for smaller product and marketing teams.',
+    solution:
+      'One dashboard that switches between a synthetic dataset and three public ones (Telco churn, Bank Marketing, Online Retail II) from a dropdown. It segments customers with KMeans, trains churn, conversion and value models, explains them with SHAP, audits them for fairness, simulates what-ifs, and uses a local LLM to write a persona for each segment. Every model is benchmarked against majority-class, logistic regression, random forest and LightGBM on a shared split and lands within about 0.01 AUC of the best baseline: Telco churn 0.838, Bank Marketing conversion 0.802, retail churn 0.802. They tie the baselines; they do not beat them.',
+    architecture:
+      'FastAPI backend where each request carries a dataset value that middleware stores in a context variable, so existing services needed no dataset-specific code, with a registry describing each dataset’s tasks and columns. Gradient Boosting for churn and conversion, Random Forest on log value for LTV, KMeans or Gaussian Mixture with PCA for segments, SHAP TreeExplainer, and an adverse-impact-ratio fairness audit. A local Ollama model (phi4-mini) writes personas, with a template fallback. The React 18 + Vite frontend builds each page from what the chosen dataset supports.',
+    contributions: [
+      'Built the full ML pipeline: feature engineering, segmentation, and the churn, conversion and value models.',
+      'Found and removed data leakage: the Bank Marketing call-duration column lifts AUC from 0.805 to 0.935, and an early synthetic generator had an LTV that was a formula of its inputs (R² 0.95, 0.61 once fixed).',
+      'Built a 90-day time-split churn and spend target from 824,364 retail transactions (5,281 customers), keeping features strictly before the cutoff.',
+      'Benchmarked every model against three standard baselines with bootstrap confidence ranges, and switched the conversion model from logistic regression to gradient boosting when Bank Marketing scored 0.772 against 0.802.',
+      'Implemented the fairness audit (80% adverse-impact rule and parity gap) and the what-if simulator, and built the React dashboard.',
+      'Tested every page across all four datasets (36 combinations) in a headless DOM test.',
+    ],
+    tech: ['Python', 'FastAPI', 'Pydantic', 'React 18', 'Vite', 'scikit-learn', 'LightGBM', 'SHAP', 'Pandas', 'Ollama (phi4-mini)', 'Recharts'],
+    tags: ['Machine Learning', 'Benchmarking', 'Data Leakage', 'Explainability', 'Fairness', 'FastAPI', 'React'],
+    challenge:
+      'The hardest part was the data, not the models. The first synthetic dataset had a 55% churn rate and an LTV score of 0.95 R² that was really a formula of its inputs, so good-looking scores meant nothing. Checking against the best possible score from the hidden true probabilities, then validating on real public data, showed what the pipeline could actually do, and the write-up says plainly that the models tie standard baselines.',
+  },
+  {
   id: 'archestra-mcp-hackathon',
   name: 'Archestra Agentic Hackathon',
   oneLiner: 'Built four AI agents for career planning, project discovery, research, and side-project collaboration as open-source hackathon contributions.',
@@ -291,33 +443,7 @@ export const projects = [
 
   challenge: 'The challenge was designing agents that actually benefit from tool access rather than behaving like generic chatbots. Each workflow had to translate fragmented external information into a useful decision or action while keeping the interaction simple enough to work as a focused product experience.'
 },
-  {
-    id: 'nurture-ai',
-    name: 'NurtureAI',
-    oneLiner:
-      'A bilingual AI parenting assistant with a deterministic safety layer that guarantees emergency escalation regardless of what the LLM says.',
-    links: { 
-      github: 'https://github.com/pavithra2870/NurtureAI',
-      demo: 'https://www.loom.com/share/7e8c1efae431433b91e66ba7ad727644',
-    },
-    problem:
-      'Generic AI chatbots are unsuitable for medical-adjacent parenting questions because they can understate risk or fail to escalate — and a confident-but-wrong answer at 2 a.m. is worse than no answer at all.',
-    solution:
-      'A layered safety architecture keeps escalation logic outside the LLM entirely: a pre-LLM rule engine matches 30+ critical and 15+ medium-risk patterns before any model runs, a hardcoded emergency bypass skips the LLM completely for critical cases, and a post-LLM safety layer can override the model\'s own risk assessment. Everything else — advice, product suggestions, RAG retrieval — runs through a grounded, bilingual (English/Arabic) pipeline.',
-    architecture:
-      'FastAPI with async pipeline stages run in parallel via asyncio.gather; hybrid intent and risk classification (regex rules authoritative, TF-IDF + Logistic Regression as fallback only); FAISS-backed RAG over separate knowledge and product indexes; AssemblyAI voice input with automatic language detection; local Ollama (llama3.2) for generation and translation, temperature-capped for factual consistency.',
-    contributions: [
-      'Designed and implemented the full pre-LLM / bypass / post-LLM safety architecture.',
-      'Built the hybrid rule-first, ML-fallback intent and risk classifiers.',
-      'Built the bilingual pipeline — Arabic detection, translation, and RTL-aware response delivery.',
-      'Built the RAG retrieval and query-enrichment layer, and the React chat UI with voice input review-before-send.',
-    ],
-    tech: ['Python', 'FastAPI', 'React', 'Ollama (llama3.2)', 'FAISS', 'sentence-transformers', 'scikit-learn', 'AssemblyAI', 'Tailwind CSS'],
-    tags: ['Safety-Critical AI', 'RAG', 'Bilingual', 'Voice AI', 'FastAPI', 'React', 'Machine Learning'],
-    challenge:
-      'The core design problem was asymmetric failure cost: a false negative on an emergency query is catastrophic, so every safety decision had to be made deterministically, with the LLM unable to override or soften it.',
-  },
-  {
+   {
   id: 'adv-audit',
   name: 'Adv-Audit',
   oneLiner: 'Neuro-symbolic AI system for auditing RTB decisions with explainability, bias detection, and human-in-the-loop control.',
@@ -373,117 +499,6 @@ export const projects = [
 
   challenge: 'RTB decisions must be made within strict latency constraints while still supporting detailed auditing and human control. The system therefore separates the live bidding path from computationally expensive XAI workloads and combines probabilistic model outputs with deterministic symbolic rules for immediate enforcement.'
 },
-{
-  id: 'fact-knowledge-layer',
-  name: 'Fact Knowledge Layer',
-  oneLiner: 'Evidence-first document intelligence system that extracts verifiable facts and distinguishes contradictions from contextual differences across PDFs.',
-  links: { 
-    github: 'https://github.com/pavithra2870/Fact-Knowledge-Layer',
-   demo: 'https://drive.google.com/file/d/16L4CESY34hxRvXIwT1Rzp769igvw5DJu/view?usp=drive_link' },
-
-  problem: 'Comparing facts across reports, filings, and research documents is difficult because different values may reflect legitimate differences in time period, geography, units, or estimate status. Naive document AI systems often flag these as contradictions or provide answers without verifiable evidence.',
-
-  solution: 'A document intelligence pipeline that extracts structured facts with source-level provenance, verifies every citation against the original document, retrieves related facts using hybrid semantic and keyword search, and combines deterministic contextual reasoning with LLM classification to identify corroboration, contradiction, contextual reconciliation, or unrelated facts.',
-
-  architecture: 'React frontend with a FastAPI backend orchestrating PDF/OCR ingestion, schema-constrained LLM extraction, evidence verification, FAISS + BM25 hybrid retrieval, Reciprocal Rank Fusion, cross-encoder reranking, contextual reasoning, and relationship classification. SQLite stores structured facts and provenance, while NetworkX and D3.js provide an interactive knowledge graph over the fact relationships.',
-
-  contributions: [
-    'Built an evidence-first fact extraction pipeline using PyMuPDF, EasyOCR, schema-constrained LLM outputs, and strict citation verification against source documents.',
-    'Designed hybrid fact retrieval combining FAISS semantic search, BM25 keyword matching, Reciprocal Rank Fusion, and cross-encoder reranking.',
-    'Implemented deterministic contextual reasoning for fiscal periods, geographic scope, units, and estimate-versus-actual status before LLM relationship classification.',
-    'Engineered multi-provider LLM routing across Gemini, Groq, and Ollama with per-key quota pools, rate-limit cooldowns, and page-level failover.',
-    'Built incremental document processing with parallel page extraction, persisted extraction failures, automatic index updates, and recovery of interrupted jobs.',
-    'Developed the React/D3 interface with real-time SSE progress tracking, evidence-centric comparisons, interactive knowledge graphs, document previews, and human feedback.'
-  ],
-
-  tech: [
-    'Python',
-    'FastAPI',
-    'React',
-    'FAISS',
-    'BM25',
-    'Sentence Transformers',
-    'Gemini',
-    'Groq',
-    'Ollama',
-    'PyMuPDF',
-    'EasyOCR',
-    'NetworkX',
-    'D3.js',
-    'SQLite',
-    'Pydantic'
-  ],
-
-  tags: [
-    'AI/ML',
-    'RAG',
-    'Document Intelligence',
-    'Hybrid Retrieval',
-    'LLMs',
-    'Knowledge Graph',
-    'NLP',
-    'OCR',
-    'FAISS',
-    'Explainable AI',
-    'Backend Engineering',
-    'Full Stack'
-  ],
-
-  challenge: 'Document comparisons require more than semantic similarity: two different values can both be correct when their fiscal periods, geographic scope, units, or estimate status differ. The system therefore combines deterministic contextual checks with LLM reasoning while enforcing evidence verification so unsupported or fabricated citations never become accepted facts.'
-},
-  {
-    id: 'airmind-ai',
-    name: 'AirMind AI',
-    oneLiner:
-      'A comprehensive urban air quality management system that transforms cities from reactive pollution monitoring to proactive intervention with forecasting, attribution, intervention planning, and AI-powered guidance.',
-    links: { 
-      github: 'https://github.com/pavithra2870/AirMind-AI',
-      demo: 'https://drive.google.com/file/d/15e0IqJD1AC2Cr126bHu_KaIrITI8jrEm/view?usp=drive_link',
-     },
-    problem:
-      'Most air quality tools tell you pollution is bad after it\'s already bad. They lack predictive capabilities, actionable insights, and the ability to explain why air quality is deteriorating or what to do about it. City administrators operate without a unified system to forecast pollution, understand its sources, evaluate intervention strategies, or communicate effectively with citizens.',
-    solution:
-      'An integrated operating system that combines real-time monitoring, machine learning forecasting, source attribution, intervention planning, and grounded AI assistance—all in one platform. Features include a live city intelligence dashboard, XGBoost-based AQI forecasting, pollution attribution agent, intervention planner with impact estimation, scenario simulator, and dual AI copilots for citizens and commissioners.',
-    architecture:
-      'Full-stack with React + Vite frontend and FastAPI backend with modular architecture (api → services → agents → ai/rag). Data pipeline ingests live data from WAQI API with historical backfill from OpenWeather, stored in Supabase (Postgres). XGBoost forecaster with feature engineering and bounded recursive prediction. RAG pipeline uses MiniLM embeddings, FAISS vector store, and Gemini LLM with similarity threshold gating. Every external dependency has a fallback path for graceful degradation.',
-    contributions: [
-      'Built the complete full-stack system with React + Vite frontend and FastAPI backend with clean modular architecture.',
-      'Implemented the XGBoost forecast engine with feature engineering, bounded recursive prediction, and confidence bands.',
-      'Built the pollution attribution agent that computes source contributions from live pollutant concentrations.',
-      'Implemented the intervention planner with ranked measures, impact estimation, and diminishing-returns aggregation.',
-      'Built the RAG-powered Citizen and Commissioner copilots with grounded answers, confidence scores, and refusal to hallucinate.',
-      'Designed the graceful degradation strategy ensuring the system never breaks during demonstrations.',
-    ],
-    tech: ['React', 'Vite', 'FastAPI', 'XGBoost', 'MiniLM', 'FAISS', 'Google Gemini', 'Supabase', 'Leaflet.js', 'Recharts', 'WAQI API', 'OpenWeather API'],
-    tags: ['Full-Stack', 'Machine Learning', 'RAG', 'Geospatial', 'Smart City', 'FastAPI', 'React', 'AI/ML'],
-    challenge:
-      'The core design problem was ensuring the system never fails during demonstrations — every external dependency (MiniLM, FAISS, trained model, backend APIs) has a fallback path, from hashed embeddings to numpy search to analytic projection to frontend mock layers, enabling immediate demo capability with zero API keys.',
-  },
-  {
-    id: 'mercado',
-    name: 'Product Intelligence Engine (Mercado)',
-    oneLiner:
-      'A microservices product-research platform that turns scattered user feedback into a financial risk report — built on entirely free-tier infrastructure.',
-    links: { 
-      live: 'https://huggingface.co/spaces/pavithra2870/product_research',
-      github: 'https://github.com/pavithra2870/Product-Research' },
-    problem:
-      'Product teams rarely have time to manually aggregate Reddit threads, app-store reviews, and forum posts into a coherent competitive picture, so decisions get made on anecdote instead of signal.',
-    solution:
-      'Mercado aggregates feedback from five sources (Reddit, HackerNews, Exa neural search, web scraping, app stores), filters it through a four-stage classification pipeline (regex spam filter → DistilBART summarization → Groq/Llama relevance check → RoBERTa sentiment), and routes the cleaned data through four parallel Gemini agents — sentiment, priority, competitor, and financial risk — before compiling a presentation-ready PDF dossier with citations back to every source.',
-    architecture:
-      'Four independent FastAPI services (gateway, scraper, classifier, analysis) communicating over HTTP, orchestrated with Docker Compose and a Redis-backed job queue so the API returns a job ID instantly and workers process in the background. Async I/O and asyncio.gather run scraping and the four analysis agents concurrently.',
-    contributions: [
-      'Designed the microservices decomposition and the hybrid local/cloud ML stack for cost control.',
-      'Built the four-stage spam/relevance classification pipeline.',
-      'Implemented the financial risk model that converts churn signals into estimated revenue at risk.',
-      'Built the React terminal-style UI with job resumption via localStorage and mid-run cancellation.',
-    ],
-    tech: ['Python', 'FastAPI', 'React', 'Redis', 'SQLite', 'Google Gemini', 'Groq (Llama 3.1)', 'RoBERTa', 'DistilBART', 'Docker Compose'],
-    tags: ['Microservices', 'Multi-Agent', 'NLP', 'Financial Modeling', 'React', 'Docker', 'Product'],
-    challenge:
-      'Keeping the entire pipeline on free-tier APIs and open-source models required distributing compute deliberately — cheap local transformers for high-volume filtering, paid APIs reserved only for reasoning-intensive steps.',
-  },
   {
     id: 'onestop25',
     name: 'OneStop 25',
@@ -563,29 +578,6 @@ export const projects = [
 
   challenge: 'Exam answers can contain handwriting, diagrams, partial solutions, and varying levels of correctness. The system had to combine multiple uncertain signals without turning grading into an opaque model decision, while keeping teacher feedback safe and making every result auditable.'
 },
-   {
-    id: 'consumer-intelligence',
-    name: 'Consumer Intelligence Platform',
-    oneLiner:
-      'An end-to-end consumer analytics platform combining ML segmentation, predictive modeling, LLM personas, and fairness auditing.',
-    links: { github: 'https://github.com/pavithra2870/Consumer-Segmentation' },
-    problem:
-      'Understanding customer segments, predicting churn, and estimating lifetime value usually requires a dedicated data science team — putting real analytics out of reach for smaller product and marketing teams.',
-    solution:
-      'A guided pipeline takes users from synthetic or uploaded consumer data through clustering-based segmentation, three predictive models (churn, LTV, conversion), SHAP-based explainability, and a fairness audit — then uses a local Ollama LLM to turn each statistical segment into a named persona with motivations, pain points, and recommended actions.',
-    architecture:
-      'FastAPI with async LLM calls and background-threaded model training to keep the API responsive. KMeans/GMM clustering with PCA for 2D visualization; Gradient Boosting, Random Forest, and Logistic Regression for the three prediction tasks; SHAP TreeExplainer/LinearExplainer for interpretability, with permutation importance as a fallback.',
-    contributions: [
-      'Built the full ML pipeline — feature engineering, segmentation, and all three predictive models.',
-      'Implemented the fairness-auditing engine (adverse impact ratio, demographic parity) with generated mitigation recommendations.',
-      'Built the LLM persona-generation flow with structured-JSON prompting and template fallback.',
-      'Built the React dashboard, including the what-if simulation tool for scenario planning.',
-    ],
-    tech: ['Python', 'FastAPI', 'React', 'scikit-learn', 'SHAP', 'Ollama (Llama 3)', 'Pandas', 'Recharts'],
-    tags: ['Machine Learning', 'Explainability', 'Fairness', 'LLM Integration', 'FastAPI', 'React'],
-    challenge:
-      'Bias auditing is rarely included in analytics tooling at all — building it in by default (rather than as an opt-in extra) meant the fairness engine had to run against both churn and conversion models automatically, not on request.',
-  },
   {
     id: 'network-qoe',
     name: 'Network QoE Prediction System',

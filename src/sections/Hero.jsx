@@ -35,12 +35,18 @@ function ProofItem({ to, suffix, label }) {
   )
 }
 
-export default function Hero() {
+export default function Hero({ ready = true }) {
   const [mounted, setMounted] = useState(false)
   const [graphActive, setGraphActive] = useState(false)
   const depthRef = useScrollDepth(680)
 
   useEffect(() => {
+    if (!ready) {
+      // Intro is (re)playing: reset so the hero enters again afterwards.
+      setMounted(false)
+      setGraphActive(false)
+      return
+    }
     const t1 = setTimeout(() => setMounted(true), 60)
     // The graph starts drawing once the headline has landed.
     const t2 = setTimeout(() => setGraphActive(true), 650)
@@ -48,7 +54,7 @@ export default function Hero() {
       clearTimeout(t1)
       clearTimeout(t2)
     }
-  }, [])
+  }, [ready])
 
   return (
     <section id="top" className="hero">
@@ -58,7 +64,7 @@ export default function Hero() {
           <div className="hero__grid">
             <div className="hero__copy">
               <p className="hero__eyebrow">
-                <span className="text-acronym">AI</span> engineer &amp; product builder
+                <span className="text-acronym">ai/ml</span>, product &amp; analyst
               </p>
               <h1 className="hero__title">
                 {TITLE_WORDS.map((w, i) => (

@@ -1,6 +1,27 @@
 // Source: product/*.md. Links come straight from each file's front matter;
-// `figma` is omitted where the source has none (Paytm Pakka).
+// `figma` and `prototype` are omitted where the source has none.
 export const caseStudies = [
+  {
+    id: 'swiggy-meal-match',
+    name: 'Swiggy Meal Match',
+    kind: 'Product case study',
+    date: 'Oct 2026',
+    headline: 'Find one restaurant that has your whole meal.',
+    problem:
+      'People think in meals, but food search works dish by dish: a user who wants two or three dishes from one place has to open menu after menu to check.',
+    approach:
+      'Users list 2 to 5 dishes and mark each required or optional. Restaurants are ranked in tiers, complete orderable-now matches first, with counts like "2/2 required available", and stock and price are rechecked at the cart.',
+    decision:
+      'Counts, not scores, and precision over recall: a false "complete match" would break trust faster than a missed one.',
+    metric:
+      'North Star: complete-meal orders per eligible session, tested with an A/B and guardrails on order value, cancellations and search conversion.',
+    tags: ['Search & discovery', 'UX design', 'Prioritisation', 'Experimentation'],
+    status: 'Concept, with 10 mobile screens and an interactive prototype',
+    links: {
+      caseStudy: 'https://drive.google.com/file/d/1ZMfnx8KI_AGZZaR_CB4jJ7pJFBE8ZAgs/view',
+      prototype: 'https://pavithra2870.github.io/Swiggy-Meal-Match/',
+    },
+  },
   {
     id: 'finlit-saarthi',
     name: 'FinLit Saarthi',
@@ -37,6 +58,7 @@ export const caseStudies = [
     tags: ['Product strategy', 'UPI', 'Growth', 'Customer research'],
     status: 'Concept · Paytm UPI Growth Challenge, Round 1',
     links: {
+      figma: 'https://www.figma.com/design/9EcdVS76PkiuD9e9ydddkh/Paytm-Pakka?node-id=0-1&t=wKcr4oxchiuVVJ2G-1',
       caseStudy:
         'https://drive.google.com/file/d/1jieV9Y02boAbs6j_aPC3q9glhtFSDHqH/view?usp=drive_link',
     },

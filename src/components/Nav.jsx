@@ -15,7 +15,7 @@ const LINKS = [
   { href: '#contact', label: 'contact' },
 ]
 
-export default function Nav() {
+export default function Nav({ onMarkClick }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const ids = useMemo(() => LINKS.map((l) => l.href.slice(1)), [])
@@ -51,7 +51,16 @@ export default function Nav() {
     <header className={`nav ${scrolled ? 'nav--scrolled' : ''} ${open ? 'nav--open' : ''}`}>
       <ScrollProgress />
       <div className="nav__inner container">
-        <a href="#top" className="nav__mark">
+        <a
+          href="#top"
+          className="nav__mark"
+          onClick={(e) => {
+            if (!onMarkClick) return
+            e.preventDefault()
+            setOpen(false)
+            onMarkClick()
+          }}
+        >
           Pavithra K R
         </a>
 
