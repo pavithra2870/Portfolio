@@ -35,15 +35,8 @@
 }
 
 .hero__visual {
-  display: none;
-  order: -1;
+  order: 1;
   padding-inline: clamp(0px, 4vw, 1rem);
-}
-
-@media (min-width: 600px) {
-  .hero__visual {
-    display: block;
-  }
 }
 
 /* Sequence: eyebrow -> headline words -> graph -> subtitle -> actions -> stats -> proof */
@@ -83,7 +76,7 @@
   }
   .hero__visual {
     order: 0;
-    margin-top: -0.5rem;
+    margin-top: -4.5rem;
   }
   .hero__title {
     font-size: clamp(2.2rem, 1.6rem + 2vw, 3.15rem);
@@ -99,6 +92,13 @@
   color: var(--color-accent);
   margin-top: -70px;
   margin-bottom: var(--space-sm);
+}
+
+/* The upward pull is for the two-column desktop layout; stacked, it hits the nav. */
+@media (max-width: 959px) {
+  .hero__eyebrow {
+    margin-top: 0;
+  }
 }
 
 .hero__title {

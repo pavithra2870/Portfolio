@@ -1,193 +1,366 @@
+/* A seed grows into Web Dev, then a trunk climbs and puts out a leaf per skill.
+   Flat colours from the site tokens. Every stage is a CSS transition or
+   animation keyed off .is-visible, with per-element timing passed in as
+   --delay / --dur. */
+
 .hero-graphic {
-  display: none;
+  display: block;
   width: 100%;
-  max-width: 680px;
+  max-width: 640px;
   margin-inline: auto;
 }
 
 .hero-graphic__svg {
+  display: block;
   width: 100%;
   height: auto;
   overflow: visible;
 }
 
-/* The node diagram only reads well once there's room for it — hidden below 600px. */
-@media (min-width: 600px) {
-  .hero-graphic {
-    display: block;
-  }
+/* ---- lines that draw themselves (pathLength is normalised to 1) ---- */
+
+.hg-draw {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset var(--dur, 600ms) var(--ease-premium) var(--delay, 0ms);
 }
 
-/* ---- branch lines (hub to satellites) ---- */
+.is-visible .hg-draw {
+  stroke-dashoffset: 0;
+}
+
+.hg-trunk {
+  stroke: var(--color-ink-soft);
+}
 
 .hg-branch {
-  fill: none;
-  stroke: var(--color-border);
-  stroke-width: 1.25;
-  stroke-linecap: round;
-  stroke-dasharray: 240;
-  stroke-dashoffset: 240;
-  transition: stroke-dashoffset 800ms var(--ease-premium);
-}
-
-.hero-graphic.is-visible .hg-branch {
-  stroke-dashoffset: 0;
-}
-
-/* ---- primary spine edges ---- */
-
-.hg-edge {
-  fill: none;
   stroke: var(--color-ink-faint);
+}
+
+/* ---- ground, soil and the sprouting ripple ---- */
+
+.hg-ground {
+  stroke: var(--color-border-strong);
   stroke-width: 2;
   stroke-linecap: round;
-  stroke-dasharray: 420;
-  stroke-dashoffset: 420;
-  transition: stroke-dashoffset 1000ms var(--ease-premium);
 }
 
-.hero-graphic.is-visible .hg-edge {
-  stroke-dashoffset: 0;
-}
-
-/* ---- traveling packets along the spine ---- */
-
-.hg-packet {
-  fill: var(--color-accent);
+.hg-mound {
+  fill: var(--color-border);
+  stroke: var(--color-border-strong);
+  stroke-width: 1.5;
+  stroke-linecap: round;
   opacity: 0;
-  offset-rotate: 0deg;
-  animation: hgFlow 3.8s var(--ease-premium) infinite;
-  animation-play-state: paused;
+  transition: opacity 500ms var(--ease-premium);
 }
 
-.hero-graphic.is-visible .hg-packet {
-  animation-play-state: running;
+.is-visible .hg-mound {
+  opacity: 1;
 }
 
-@keyframes hgFlow {
-  0% { offset-distance: 0%; opacity: 0; transform: scale(0.8); }
-  10% { opacity: 1; transform: scale(1); }
-  88% { opacity: 1; transform: scale(1); }
-  100% { offset-distance: 100%; opacity: 0; transform: scale(0.8); }
+.hg-ripple {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
-/* ---- shared node styling ---- */
+.is-visible .hg-ripple {
+  animation: hgRipple 1100ms ease-out var(--delay, 0ms) forwards;
+}
 
-.hg-node {
+@keyframes hgRipple {
+  from { opacity: 0.5; transform: scale(0.2); }
+  to { opacity: 0; transform: scale(1.5); }
+}
+
+/* ---- seed ---- */
+
+.hg-seed {
   transform-box: fill-box;
   transform-origin: center;
   opacity: 0;
-  transform: scale(0.5);
-  transition: opacity 620ms var(--ease-premium), transform 620ms var(--ease-premium);
+  transform: scale(0.6);
+  transition: opacity 500ms var(--ease-premium), transform 500ms var(--ease-premium);
 }
 
-.hero-graphic.is-visible .hg-node {
+.is-visible .hg-seed {
   opacity: 1;
   transform: scale(1);
+  animation: hgSeedPulse 600ms var(--ease-premium) 450ms;
 }
 
-/* ---- cursor depth: far layers drift most, the spine stays put ---- */
-
-.hero-graphic__branches,
-.hero-graphic__satellites {
-  transform: translate(calc(var(--px, 0) * -9px), calc(var(--py, 0) * -7px));
+.hg-seed circle {
+  fill: var(--color-ink);
 }
 
-.hero-graphic__nodes {
-  transform: translate(calc(var(--px, 0) * 3px), calc(var(--py, 0) * 2px));
+.hg-seed text {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  fill: var(--color-bg);
 }
 
-.hg-node circle {
-  fill: var(--color-bg-raised);
-  stroke: var(--color-ink-faint);
-  stroke-width: 1.75;
-  transition: stroke var(--duration-fast) var(--ease-premium), fill var(--duration-fast) var(--ease-premium);
+@keyframes hgSeedPulse {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(1.14); }
 }
 
-.hg-node--hub circle {
-  stroke: var(--color-ink);
-  stroke-width: 2;
-}
+/* ---- nodes: the ring draws, then the fill and label, then one soft pulse ---- */
 
-.hg-node--dest circle {
+.hg-ring {
   stroke: var(--color-accent);
   stroke-width: 2.5;
-  fill: var(--color-accent-soft);
 }
 
-.hg-node--satellite circle {
+.hg-disc {
+  fill: var(--color-accent-soft);
+  opacity: 0;
+  transition: opacity 500ms var(--ease-premium) calc(var(--delay, 0ms) + 350ms);
+}
+
+.is-visible .hg-disc {
+  opacity: 1;
+}
+
+.hg-node-text {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  fill: var(--color-accent-ink);
+  opacity: 0;
+  transition: opacity 500ms var(--ease-premium) calc(var(--delay, 0ms) + 550ms);
+}
+
+.is-visible .hg-node-text {
+  opacity: 1;
+}
+
+/* the ring is the only drawn part of a node, so it takes the node's delay */
+.hg-node .hg-ring {
+  transition-delay: var(--delay, 0ms);
+}
+
+.hg-pulse {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.is-visible .hg-pulse {
+  animation: hgPulse 1000ms ease-out calc(var(--delay, 0ms) + 600ms) forwards;
+}
+
+@keyframes hgPulse {
+  from { opacity: 0.5; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.45); }
+}
+
+/* ---- bud at the top, breathing slowly once grown ---- */
+
+.hg-bud {
+  fill: var(--color-accent);
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: transform 500ms var(--ease-premium) var(--delay, 0ms);
+}
+
+.is-visible .hg-bud {
+  transform: scale(1);
+  animation: hgBud 3.6s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0ms) + 900ms);
+}
+
+@keyframes hgBud {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+}
+
+/* ---- sap: a small light that rises up the trunk every few seconds ---- */
+
+.hg-sap {
+  fill: var(--color-accent);
+  opacity: 0;
+  offset-rotate: 0deg;
+}
+
+.is-visible .hg-sap {
+  animation: hgSap 9s linear infinite;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes hgSap {
+  0% { offset-distance: 0%; opacity: 0; }
+  4% { opacity: 0.9; }
+  34% { offset-distance: 100%; opacity: 0.9; }
+  38% { offset-distance: 100%; opacity: 0; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+/* ---- leaves unfurl from their base, with a slight overshoot ---- */
+
+.hg-leafbody {
+  opacity: 0;
+  transform: scale(0) rotate(-26deg);
+  transition: transform 900ms cubic-bezier(0.34, 1.45, 0.64, 1) var(--delay, 0ms),
+              opacity 350ms ease var(--delay, 0ms);
+}
+
+.is-visible .hg-leafbody {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.hg-leaf {
+  fill: var(--color-accent-soft);
   stroke: var(--color-accent);
   stroke-width: 1.5;
-  fill: var(--color-accent-soft);
+  stroke-linejoin: round;
+  transition: fill var(--duration-fast) var(--ease-premium);
+}
+
+.hg-vein {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+/* Once grown, leaves sway a few degrees about their base. */
+.hg-sway {
+  animation: hgSway 7s ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0ms) + 900ms);
+  animation-play-state: paused;
+}
+
+.is-visible .hg-sway {
+  animation-play-state: running;
+}
+
+@keyframes hgSway {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50% { transform: rotate(2.5deg); }
 }
 
 /* ---- labels ---- */
 
 .hg-label {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 16px;
   fill: var(--color-ink-soft);
   opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 500ms var(--ease-premium), transform 500ms var(--ease-premium);
+  transform: translate(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 4px));
+  transition: opacity 500ms var(--ease-premium) var(--delay, 0ms),
+              fill var(--duration-fast) var(--ease-premium);
 }
 
-.hg-label--sat {
-  font-size: 11px;
+.is-visible .hg-label {
+  opacity: 0.95;
+}
+
+/* ---- words riding on the trunk edges ---- */
+
+.hg-edge-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.04em;
   fill: var(--color-ink-faint);
+  opacity: 0;
+  transition: opacity 600ms var(--ease-premium) var(--delay, 0ms);
 }
 
-.hero-graphic.is-visible .hg-label {
-  opacity: 0.9;
-  transform: translateY(0);
-}
-
-/* ---- hover feedback ---- */
-
-.hero-graphic__nodes g:hover .hg-node circle,
-.hero-graphic__satellites g:hover .hg-node circle {
-  stroke: var(--color-accent);
-  fill: var(--color-accent-soft);
-}
-
-.hero-graphic__nodes g:hover .hg-label,
-.hero-graphic__satellites g:hover .hg-label {
+.is-visible .hg-edge-label {
   opacity: 1;
-  fill: var(--color-accent-ink);
-  transform: translateY(1px) scale(1.03);
 }
 
-@media (max-width: 640px) {
-  .hg-label {
-    font-size: 12px;
+/* ---- hover ---- */
+
+.hg-leafgroup:hover .hg-leaf {
+  fill: var(--color-accent);
+}
+
+.hg-leafgroup:hover .hg-vein {
+  stroke: var(--color-bg);
+  opacity: 0.7;
+}
+
+.hg-leafgroup:hover .hg-label {
+  fill: var(--color-accent-ink);
+}
+
+/* ---- small screens: viewBox units shrink with the width, so bump the type ---- */
+
+@media (max-width: 599px) {
+  .hero-graphic {
+    max-width: 400px;
   }
-  .hg-label--sat {
-    font-size: 10px;
+  /* The drawing is ~340px wide on a phone, so 23 units is about 12px of text.
+     The sans face is narrower than the mono one, which keeps long labels on screen. */
+  .hg-label {
+    font-family: var(--font-sans);
+    font-size: 23px;
+  }
+  .hg-edge-label {
+    font-family: var(--font-sans);
+    font-size: 20px;
+  }
+  .hg-node-text {
+    font-family: var(--font-sans);
+    font-size: 19px;
+  }
+  .hg-seed text {
+    font-size: 17px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hg-branch,
-  .hg-edge,
-  .hg-node,
-  .hg-label {
+  .hg-draw {
+    stroke-dashoffset: 0;
     transition: none;
   }
-  .hg-branch,
-  .hg-edge {
-    stroke-dashoffset: 0;
-  }
-  .hg-node,
-  .hg-label {
+  .hg-bud,
+  .hg-seed,
+  .hg-leafbody {
     opacity: 1;
     transform: none;
+    transition: none;
     animation: none;
   }
-  .hg-label.hg-label--sat,
-  .hg-label {
-    opacity: 0.9;
+  .hg-disc,
+  .hg-node-text,
+  .hg-mound {
+    opacity: 1;
+    transition: none;
   }
-  .hg-packet {
+  .hg-label {
+    opacity: 0.95;
+    transform: none;
+    transition: none;
+  }
+  .hg-edge-label {
+    opacity: 1;
+    transition: none;
+  }
+  .hg-sway,
+  .hg-sap,
+  .hg-pulse,
+  .hg-ripple {
+    animation: none;
+  }
+  .hg-sap,
+  .hg-pulse,
+  .hg-ripple {
     display: none;
   }
 }
